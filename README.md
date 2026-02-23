@@ -10,3 +10,4 @@ To open these files use drawio application.
 
 In file "UseCases" you can see usecases of web-application.
 
+File "SalaryDB.sql" contains sql-script for creating database. 
