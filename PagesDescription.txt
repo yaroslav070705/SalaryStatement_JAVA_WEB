@@ -1,0 +1,55 @@
+Big black rectangle - web-page.
+Ellipse contains the name of the page/table.
+
+Dark grey rectangle with row table of objects(employee, projects ...)
+
+Light grey rectangle - layer with widgets which appears after click on the button that it contains with 2-arrow-sign near.
+
+Small black rectangles witch sharp corners are buttons.
+Small black rectangles witch soft corners are text fields of editable fields if specified near into parallelogram. 
+
+Arrows show wich page you will get if you press the button.
+
+
+Main page(page with employee information)
+
+Button with 3 lines at the left corner shows a layer with 3 navigation buttons which get you to pages with employee, projects and payout policies.
+At the right corner button "Добавить работника" shows a layer with attributes of the new employee.
+The button "Фильтры" shows a layer with fields to specify employee you want to see in the nearby table.
+Every row in the table "Список работников" is a button which gets you to the page of current worker.
+
+
+
+Projects page(Проекты)
+
+Buttons with 3 lines, "Фильтры" are the same as in the previous description.
+Table "Список проектов" contains rows with projects.
+Every row is a button which gets you to the page of current project.
+Button "Добавить проект" shows you a layer with attributes of a new project. 
+
+Payout Policies Page(Политики выплат)
+
+Button with 3 lines is the same as in the previous description.
+Buttons "По должностям", "Стаж" etc. shows layers with tables of current type information.
+Button "Добавить" becomes enable if you've pressed any button.
+Button "Удалить" becomes enable if you've chosen any rows in the table.
+
+
+Project information page(Информация о проекте)
+
+Button with 3 lines is the same as in the previous description.
+Button "Удалить проект" deletes current project(with admitting question)
+Table "Список работников" contains employee who works in this project.
+Every row gets you to the page of current worker.
+Widget "Количество" shows you number of rows in the table.
+Button "Добавить работника" shows you a layer where you can find current employee with its name surname... and specify the role of the employee in this project.
+Button "Удалить работников" shows you a layer with table where you can tap on rows with workers you want to delete.
+
+Employee information page(Информация о работнике)
+
+Buttonn with 3 lines and "Фильтры" is the same as in the previous description.
+Widgets "Фио","Дата рождения" etc. shows main information about current worker.
+Button "Редактировать" allows you to redact information. Then press button "Сохранить" to save it.
+Tables "История должностей", "История ролей" etc. shows additional information about current employee.
+Button "Удалить работника" deletes current worker.
+ 
