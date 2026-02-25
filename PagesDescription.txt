@@ -36,20 +36,33 @@ Attributes are:
   Input field(select) "Должность" to specify the post of a new employee;
   Input field(select) "Проект" to specify the project where an employee works;
   Input field(select) "Роль в проекте" to specify the role of an employee in any project;
-  Input field(True/False) "Премирован" to specify has an employee been rewarded in this quarter.
+  Input field(True/False) "Премирован" to specify has an employee been rewarded in this quarterl;
 
 Table "Список работников" contains rows-buttons with name, surname, middle name and post of current employee, which get you to the page of current employee if yoy click it.
-
 Text field "Количество" shows you a number of rows in current table.
-
 
 
 Projects page(Проекты)
 
-Buttons with 3 lines, "Фильтры" are the same as in the previous description.
-Table "Список проектов" contains rows with projects.
-Every row is a button which gets you to the page of current project.
-Button "Добавить проект" shows you a layer with attributes of a new project. 
+Buttons with 3 lines is the same as in the previous description.
+Buutton "Фильтры" shows a layer with attributes to specify project you want to see in the nearby table and 
+button "Применить" to admit filteres you specified.
+
+Attributes are:
+  Input field "Название" to specify the name of a project;
+  Input field(calendar) "Дата начала" to specify the date a project was started;
+  Input field(calendar) "Дата конца" to specify the date a project was finished;
+  
+Button "Добавить проект" shows you a layer with attributes of a new project and buttons "Отменить" to discard adding of a new project, "Добаить" to accept adding of a new project.
+
+Attributes are:
+  Input field "Название" to specify the name of a new project;
+  Input field(calendar) "Дата начала" to specify the date a new project was started;
+  Input field(calendar) "Дата конца" to specify the date a new project plans to be finished;
+
+Table "Список проектов" contains rows-buttons with name, start_date and finish date of current project. which get you
+to the page if current project.
+ 
 
 Payout Policies Page(Политики выплат)
 
@@ -78,3 +91,4 @@ Tables "История должностей", "История ролей" etc. s
 Button "Удалить работника" deletes current worker.
 
  
+
