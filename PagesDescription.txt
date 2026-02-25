@@ -67,9 +67,17 @@ to the page if current project.
 Payout Policies Page(Политики выплат)
 
 Button with 3 lines is the same as in the previous description.
-Buttons "По должностям", "Стаж" etc. shows layers with tables of current type information.
+Button "По должностям" shows you a layer with table with rows contains information about current post and it's payout value.
+Button "Премиальные" shows you a layer with table with rows contains information about current reward payout value and cause of it.
+Button "Стаж" shows you a layer with table with rows contains information about current work experience border and it's payout value.
+Button "По проектам" shows you a layer with the input field(search and list) "Проект" you have to specify to see information about roles in current project and table which shows you this information.
+Button "Добавить" becomes available when you click any button("Премиальные", "Стаж", "По проектам", "По должностям")
+and shows you a layer with attributes of payout you want to add or redact and buttons "Отменить" to discard adding of a new payout value, "Добаить" to accept adding of a new payout value.
+
+Atrributes are the same as in the table on the layer of button you clicked.
+
 Button "Добавить" becomes enable if you've pressed any button.
-Button "Удалить" becomes enable if you've chosen any rows in the table.
+Button "Удалить" becomes enable if you've chosen any rows in any table of layers.
 
 
 Project information page(Информация о проекте)
@@ -91,4 +99,5 @@ Tables "История должностей", "История ролей" etc. s
 Button "Удалить работника" deletes current worker.
 
  
+
 
