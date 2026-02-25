@@ -14,9 +14,33 @@ Arrows show wich page you will get if you press the button.
 Main page(page with employee information)
 
 Button with 3 lines at the left corner shows a layer with 3 navigation buttons which get you to pages with employee, projects and payout policies.
-At the right corner button "Добавить работника" shows a layer with attributes of the new employee.
-The button "Фильтры" shows a layer with fields to specify employee you want to see in the nearby table.
-Every row in the table "Список работников" is a button which gets you to the page of current worker.
+At the right corner button "Добавить работника" shows a layer with attributes of the new employee and buttons "Отменить" to discard adding of a new employee, "Добаить" to accept adding of a new employee.
+
+Attributes are:
+  Input field "Имя" to specify the name of a new employee;
+  Input field "Фамилия" to specify the surname of a new employee;
+  Input field "Отчество" to specify the middle name of a new employee;
+  Input field(calendar) "Дата рождения" to specify the date of birth of a new employee;
+  Input field "Образование" to specify the graduation organisation of a new employee;
+  Input field(select) "Должность" to specify the post of a new employee;
+  
+
+The button "Фильтры" shows a layer with attributes to specify employee you want to see in the nearby table and 
+button "Применить" to admit filteres you specified.
+
+Attributes are:
+  Input field "Имя" to specify the name of an employee;
+  Input field "Фамилия" to specify the surname of an employee;
+  Input field "Отчество" to specify the middle name of an employee;
+  Input field(calendar) "Дата рождения" to specify the date of birth of an employee;
+  Input field(select) "Должность" to specify the post of a new employee;
+  Input field(select) "Проект" to specify the project where an employee works;
+  Input field(select) "Роль в проекте" to specify the role of an employee in any project;
+  Input field(True/False) "Премирован" to specify has an employee been rewarded in this quarter.
+
+Table "Список работников" contains rows-buttons with name, surname, middle name and post of current employee, which get you to the page of current employee if yoy click it.
+
+Text field "Количество" shows you a number of rows in current table.
 
 
 
@@ -52,4 +76,5 @@ Widgets "Фио","Дата рождения" etc. shows main information about c
 Button "Редактировать" allows you to redact information. Then press button "Сохранить" to save it.
 Tables "История должностей", "История ролей" etc. shows additional information about current employee.
 Button "Удалить работника" deletes current worker.
+
  
