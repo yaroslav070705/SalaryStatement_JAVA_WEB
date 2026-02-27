@@ -86,7 +86,10 @@ Button "Удалить проект" deletes current project(with admitting ques
 Text field "Название" shows the name of the project.
 Text field "Дата начала" shows the date the project has been started.
 Text field "Дата конца" shows the date the project has been finished.
-Table "Список работников" contains rows-buttons with name, surname, middle name and role of ccurrent employee, which get you to the page of current employee if yoy click it.
+Button "Редактировать" to redact text fields descriped higher.
+Button "Сохранить" becomes available if you have redacted text fields described higher to save editings.
+
+Table "Список работников" contains rows-buttons with name, surname, middle name and role of current employee, which get you to the page of current employee if yoy click it.
 Text field "Количество" shows a number of rows in the table.
 
 Button "Добавить работника" shows you a layer with input field(search+list) "ФИО", input field(select) "Роль", buttons
@@ -103,15 +106,37 @@ Table "Список работников" is the same as described in this page,
 Button "Отменить" to discard deleting employees.
 Button "Добавить" to apply deleting employees.
 
+
 Employee information page(Информация о работнике)
 
-Buttonn with 3 lines and "Фильтры" is the same as in the previous description.
-Widgets "Фио","Дата рождения" etc. shows main information about current worker.
-Button "Редактировать" allows you to redact information. Then press button "Сохранить" to save it.
-Tables "История должностей", "История ролей" etc. shows additional information about current employee.
-Button "Удалить работника" deletes current worker.
+Button with 3 lines is the same as in the previous description.
+Button "Удалить работника" deletes current employee(with admitting question)
+Text field "ФИО" shows the full name of the employee.
+Text field "Дата рождения" shows the date of birth.
+Text field "Должность" shows the post of the employee.
+Text field "Стаж" shows a work experience of the employee.
+Text field "Домашний адрес" shows the home address of the employee.
 
+Button "Редактировать" to redact text fields descriped higher.
+Button "Сохранить" becomes available if you have redacted text fields described higher to save editings.
+
+Table "Проекты" contains rows-buttons with name and role of the employee in current project, which get you to the page of current project if yoy click it.
+Table "История должностей" contains text rows with post which had the employee and dates from and to.
+Table "История ролей" contains text rows with project name, role and dates from and to.
+Table "Премии" contains text rows with reward value and date of payout.
+Table "История выплат" contains text rows with payout value, type and payout date.
+Button "Фильтры" shows a layer with text filter attributes:
+
+Attributes are:
+  Input field(range) "Размер" to specify a payout value range.
+  Input field(select) "Тип" to specify a payout type.
+  Input fields(range) "Дата с" "Дата по" to specify data range of payouts.
+  Button "Применить" to apply filter.
  
+
+
+
+
 
 
 
