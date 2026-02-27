@@ -58,7 +58,6 @@ Button "Добавить проект" shows you a layer with attributes of a ne
 Attributes are:
   Input field "Название" to specify the name of a new project;
   Input field(calendar) "Дата начала" to specify the date a new project was started;
-  Input field(calendar) "Дата конца" to specify the date a new project plans to be finished;
 
 Table "Список проектов" contains rows-buttons with name, start_date and finish date of current project. which get you
 to the page if current project.
@@ -84,11 +83,25 @@ Project information page(Информация о проекте)
 
 Button with 3 lines is the same as in the previous description.
 Button "Удалить проект" deletes current project(with admitting question)
-Table "Список работников" contains employee who works in this project.
-Every row gets you to the page of current worker.
-Widget "Количество" shows you number of rows in the table.
-Button "Добавить работника" shows you a layer where you can find current employee with its name surname... and specify the role of the employee in this project.
-Button "Удалить работников" shows you a layer with table where you can tap on rows with workers you want to delete.
+Text field "Название" shows the name of the project.
+Text field "Дата начала" shows the date the project has been started.
+Text field "Дата конца" shows the date the project has been finished.
+Table "Список работников" contains rows-buttons with name, surname, middle name and role of ccurrent employee, which get you to the page of current employee if yoy click it.
+Text field "Количество" shows a number of rows in the table.
+
+Button "Добавить работника" shows you a layer with input field(search+list) "ФИО", input field(select) "Роль", buttons
+"Отменить" and "Добавить".
+Input field(search+list) "ФИО" to specify current worker.
+Input field(select) "Роль" to specify the role of the worker in this project.
+Button "Отменить" to discard adding a new employee.
+Button "Добавить" to apply adding a new employee.
+
+Button "Удалить работников" shows you a layer with table "Список работников", buttons
+"Отменить" and "Удалить".
+Table "Список работников" is the same as described in this page, but buttons just select worker do be deleted.
+
+Button "Отменить" to discard deleting employees.
+Button "Добавить" to apply deleting employees.
 
 Employee information page(Информация о работнике)
 
@@ -99,5 +112,6 @@ Tables "История должностей", "История ролей" etc. s
 Button "Удалить работника" deletes current worker.
 
  
+
 
 
