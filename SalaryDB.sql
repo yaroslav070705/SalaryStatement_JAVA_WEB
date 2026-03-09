@@ -1,8 +1,4 @@
--- Database: demo
-
--- DROP DATABASE IF EXISTS demo;
-
-CREATE DATABASE demo
+CREATE DATABASE salary_statement_db
     WITH
     OWNER = postgres
     ENCODING = 'UTF8'
