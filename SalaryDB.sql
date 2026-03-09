@@ -15,18 +15,18 @@ CREATE TABLE Posts (
 	payout_value MONEY
 );
 
-CREATE TABLE Employee (
+CREATE TABLE Employees (
 	employee_id UUID PRIMARY KEY,
 	"name" VARCHAR(50),
 	surname VARCHAR(50),
 	middle_name VARCHAR(50),
-	birth_date_id DATE,
+	birth_date DATE,
 	work_experience INTERVAL,
 	post_id UUID REFERENCES Posts(post_id),
 	fired BOOL
 );
 
-CREATE TABLE Employee_Posts_History (
+CREATE TABLE Employees_Posts_History (
 	employee_id UUID REFERENCES Employee(employee_id),
 	post_id UUID REFERENCES Posts(post_id),
 	start_date DATE,
@@ -72,7 +72,7 @@ CREATE TABLE Role_Payout_Value (
 	PRIMARY KEY(project_id, role_id)
 );
 
-CREATE TABLE Employee_Roles_History (
+CREATE TABLE Employees_Roles_History (
 	employee_id UUID REFERENCES Employee(employee_id),
 	project_id UUID REFERENCES Projects(project_id),
 	role_id UUID REFERENCES Roles(role_id),
