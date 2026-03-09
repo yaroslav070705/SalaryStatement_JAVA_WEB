@@ -21,7 +21,7 @@ CREATE TABLE Employee (
 	surname VARCHAR(50),
 	middle_name VARCHAR(50),
 	birth_date_id DATE,
-	work_expirience INTERVAL,
+	work_experience INTERVAL,
 	post_id UUID REFERENCES Posts(post_id),
 	fired BOOL
 );
