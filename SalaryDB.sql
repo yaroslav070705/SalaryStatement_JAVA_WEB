@@ -9,11 +9,6 @@ CREATE DATABASE salary_statement_db
     CONNECTION LIMIT = -1
     IS_TEMPLATE = False;
 
-ALTER DATABASE demo
-    SET search_path TO bookings, public;
-ALTER DATABASE demo
-    SET "bookings.lang" TO 'ru';
-
 CREATE TABLE Posts (
 	post_id UUID PRIMARY KEY,
 	post_name VARCHAR(50),
