@@ -14,3 +14,6 @@ In file "UseCases" you can see usecases of web-application.
 File "SalaryDB.sql" contains sql-script for creating database. 
 
 You can find JAVA classes for database tables in /salary-statement/src/main/java/salary_statement_models
+
+salary-statement/src/main/resources/META-INF/orm.xml - mapping java classes to database tables file
+
