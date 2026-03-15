@@ -15,4 +15,36 @@ public class Employee {
     private boolean fired;
 
     public Employee(){}
+
+    public UUID getId () {
+        return employee_id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public String getMiddleName() {
+        return middle_name;
+    }
+
+    public LocalDate getBirthDate() {
+        return  birth_date;
+    }
+
+    public int getWorkExperience() {
+        return work_experience;
+    }
+
+    public UUID getPostId() {
+        return post_id.getId();
+    }
+
+    public boolean getFired () {
+        return fired;
+    }
 }
