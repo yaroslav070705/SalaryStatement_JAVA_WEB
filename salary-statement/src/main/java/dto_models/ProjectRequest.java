@@ -1,22 +1,28 @@
-package salary_statement_models;
+package dto_models;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
-
-public class EmployeePostHistory {
-    private Employee employee_id;
-    private Post post_id;
+public class ProjectRequest {
+    private UUID project_id;
+    private String project_name;
     private LocalDate start_date;
     private LocalDate end_date;
 
-    public UUID[] getId() {
-        return new UUID[]{employee_id.getId(), post_id.getId()};
+    public UUID getId() {
+        return project_id;
     }
 
-    public void setId(Employee employee_id, Post post_id) {
-        this.employee_id = employee_id;
-        this.post_id = post_id;
+    public void setId(UUID project_id) {
+        this.project_id = project_id;
+    }
+
+    public String getProjectName() {
+        return project_name;
+    }
+
+    public void setProjectName(String project_name) {
+        this.project_name = project_name;
     }
 
     public LocalDate getStartDate() {

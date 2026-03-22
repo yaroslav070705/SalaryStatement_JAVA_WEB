@@ -1,9 +1,9 @@
-package salary_statement_models;
+package dto_models;
 
 import java.util.UUID;
 
+public class RoleRequest {
 
-public class Role {
     private UUID role_id;
     private String role_name;
 
@@ -11,14 +11,8 @@ public class Role {
         return role_id;
     }
 
-    public boolean setId(UUID role_id) {
-        if(role_id == null){
-            return false;
-        }
-
+    public void setId(UUID role_id) {
         this.role_id = role_id;
-
-        return true;
     }
 
     public String getRoleName() {

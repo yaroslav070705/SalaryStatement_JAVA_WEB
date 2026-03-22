@@ -8,6 +8,12 @@ public class ProjectSetupPK implements Serializable {
     private UUID employee_id;
     private UUID project_id;
 
+    public ProjectSetupPK(){}
+    public ProjectSetupPK(UUID employee_id, UUID project_id) {
+        this.employee_id = employee_id;
+        this.project_id = project_id;
+    }
+
     public boolean equals(Object obj) {
         if (obj instanceof ProjectSetupPK ps_obj){
             if (this == obj) {

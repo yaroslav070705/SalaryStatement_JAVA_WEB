@@ -1,18 +1,11 @@
-package salary_statement_models;
+package dto_models;
 
 import java.util.UUID;
 
-
-public class WorkExperiencePayoutValue {
+public class WorkExperiencePayoutValueRequest {
     private UUID experience_id;
     private int work_experience;
     private Double value;
-
-    public WorkExperiencePayoutValue() {}
-    public WorkExperiencePayoutValue(int work_experience, Double value) {
-        this.work_experience = work_experience;
-        this.value = value;
-    }
 
     public UUID getId() {
         return experience_id;

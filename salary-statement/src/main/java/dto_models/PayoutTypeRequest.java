@@ -1,9 +1,8 @@
-package salary_statement_models;
+package dto_models;
 
 import java.util.UUID;
 
-
-public class PayoutType {
+public class PayoutTypeRequest {
     private UUID payout_type_id;
     private String payout_type;
 
@@ -18,6 +17,7 @@ public class PayoutType {
     public String getPayoutType() {
         return payout_type;
     }
+
     public void setPayoutType(String payout_type) {
         this.payout_type = payout_type;
     }

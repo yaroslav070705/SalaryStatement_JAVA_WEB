@@ -16,6 +16,7 @@
 
             <id name="employee_id">
                 <column name="employee_id"/>
+                <generated-value generator="system-uuid"/>
             </id>
 
             <basic name="name">
@@ -61,6 +62,7 @@
 
             <id name="post_id">
                 <column name="post_id"/>
+                <generated-value generator="system-uuid"/>
             </id>
 
             <basic name="post_name">
@@ -118,6 +120,7 @@
 
             <id name="payout_type_id">
                 <column name="payout_type_id"/>
+                <generated-value generator="system-uuid"/>
             </id>
 
             <basic name="payout_type">
@@ -171,6 +174,7 @@
 
             <id name="project_id">
                 <column name="project_id"/>
+                <generated-value generator="system-uuid"/>
             </id>
 
             <basic name="project_name">
@@ -197,6 +201,7 @@
 
             <id name="role_id">
                 <column name="role_id"/>
+                <generated-value generator="system-uuid"/>
             </id>
 
             <basic name="role_name">
@@ -320,6 +325,7 @@
 
             <id name="experience_id">
                 <column name="experience_id"/>
+                <generated-value generator="system-uuid"/>
             </id>
 
             <basic name="work_experience">

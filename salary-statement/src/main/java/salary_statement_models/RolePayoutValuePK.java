@@ -8,6 +8,12 @@ public class RolePayoutValuePK implements Serializable {
     private UUID project_id;
     private UUID role_id;
 
+    public RolePayoutValuePK() {}
+    public RolePayoutValuePK(UUID project_id, UUID role_id) {
+        this.project_id = project_id;
+        this.role_id = role_id;
+    }
+
     public boolean equals(Object obj) {
         if (obj instanceof RolePayoutValuePK rp_obj){
             if (this == obj) {

@@ -1,26 +1,17 @@
-package salary_statement_models;
-
-import dto_models.PostRequest;
+package dto_models;
 
 import java.util.UUID;
 
-
-public class Post {
+public class PostRequest {
     private UUID post_id;
     private String post_name;
     private Double payout_value;
-
-    public Post() {}
-    public Post(PostRequest req) {
-        this.post_name = req.getPostName();
-        this.payout_value =req.getPayoutValue();
-    }
 
     public UUID getId() {
         return post_id;
     }
 
-    public void setId(UUID post_id){
+    public void setId(UUID post_id) {
         this.post_id = post_id;
     }
 
@@ -35,6 +26,7 @@ public class Post {
     public Double getPayoutValue() {
         return payout_value;
     }
+
     public void setPayoutValue(Double payout_value) {
         this.payout_value = payout_value;
     }
