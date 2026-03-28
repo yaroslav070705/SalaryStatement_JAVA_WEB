@@ -1,5 +1,7 @@
 package salary_statement_models;
 
+import dto_models.RolePayoutValueRequest;
+
 import java.util.UUID;
 
 
@@ -7,6 +9,11 @@ public class RolePayoutValue {
     private Project project_id;
     private Role role_id;
     private Double value;
+
+    public RolePayoutValue() {}
+    public RolePayoutValue(RolePayoutValueRequest req) {
+        this.value = req.getValue();
+    }
 
     public UUID[] getId() {
         return new UUID[]{project_id.getId(), role_id.getId()};

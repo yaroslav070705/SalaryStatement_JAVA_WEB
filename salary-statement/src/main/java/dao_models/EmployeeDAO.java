@@ -50,10 +50,11 @@ public class EmployeeDAO implements EmployeeInterfaceDAO{
     @Transactional
     @Override
     public void update(EmployeeRequest emp_req) {
-        Employee cur_emp = entityManager.find(Employee.class, emp_req.getId());
+        Employee cur_emp = entityManager.find(Employee.class, emp_req.getEmployeeId());
         if(emp_req.getPostId() != cur_emp.getPostId()) {
-            UUID prev_post_id = entityManager.find(Employee.class, emp_req.getId()).getPostId();
-            EmployeePostHistory prev_emp_post_history = entityManager.find(EmployeePostHistory.class, new EmployeePostHistoryPK(emp_req.getId(), prev_post_id));
+            UUID prev_post_id = entityManager.find(Employee.class, emp_req.getEmployeeId()).getPostId();
+            EmployeePostHistory prev_emp_post_history = entityManager.find(EmployeePostHistory.class,
+                                                                           new EmployeePostHistoryPK(emp_req.getEmployeeId(), prev_post_id));
             LocalDate local_date = LocalDate.now();
             prev_emp_post_history.setEndDate(local_date);
         }

@@ -1,5 +1,7 @@
 package salary_statement_models;
 
+import dto_models.WorkExperiencePayoutValueRequest;
+
 import java.util.UUID;
 
 
@@ -9,9 +11,9 @@ public class WorkExperiencePayoutValue {
     private Double value;
 
     public WorkExperiencePayoutValue() {}
-    public WorkExperiencePayoutValue(int work_experience, Double value) {
-        this.work_experience = work_experience;
-        this.value = value;
+    public WorkExperiencePayoutValue(WorkExperiencePayoutValueRequest req) {
+        this.work_experience = req.getWorkExperience();
+        this.value = req.getValue();
     }
 
     public UUID getId() {

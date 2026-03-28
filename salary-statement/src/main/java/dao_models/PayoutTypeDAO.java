@@ -28,8 +28,7 @@ public class PayoutTypeDAO implements PayoutTypeInterfaceDAO{
     @Transactional
     @Override
     public void insert(PayoutTypeRequest req) {
-        PayoutType entity = new PayoutType();
-        entity.setPayoutType(req.getPayoutType());
+        PayoutType entity = new PayoutType(req);
 
         entityManager.persist(entity);
     }
@@ -37,7 +36,7 @@ public class PayoutTypeDAO implements PayoutTypeInterfaceDAO{
     @Transactional
     @Override
     public void update(PayoutTypeRequest req) {
-        PayoutType entity = entityManager.find(PayoutType.class, req.getId());
+        PayoutType entity = entityManager.find(PayoutType.class, req.getPayoutTypeId());
 
         entity.setPayoutType(req.getPayoutType());
     }

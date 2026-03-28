@@ -12,31 +12,23 @@ public class PayoutRequest {
     public UUID getEmployeeId() {
         return employee_id;
     }
-
-    public void setEmployeeId(UUID employee_id) {
-        this.employee_id = employee_id;
-    }
-
     public UUID getPayoutTypeId() {
         return payout_type_id;
     }
-
-    public void setPayoutTypeId(UUID payout_type_id) {
-        this.payout_type_id = payout_type_id;
-    }
-
     public LocalDate getDate() {
         return date;
     }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
     public Double getValue() {
         return value;
     }
 
+    public void setEmployeeId(UUID employee_id) {
+        this.employee_id = employee_id;
+    }
+    public void setPayoutTypeId(UUID payout_type_id) {
+        this.payout_type_id = payout_type_id;
+    }
+    public void setDate(LocalDate date) { this.date = date; }
     public void setValue(Double value) {
         this.value = value;
     }

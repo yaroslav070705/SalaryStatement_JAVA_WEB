@@ -29,15 +29,15 @@ public class WorkExperiencePayoutValueDAO implements WorkExperiencePayoutValueIn
 
     @Transactional
     @Override
-    public void insert(WorkExperiencePayoutValueRequest work_exp_req) {
-        WorkExperiencePayoutValue work_exp = new WorkExperiencePayoutValue(work_exp_req.getWorkExperience(), work_exp_req.getValue());
+    public void insert(WorkExperiencePayoutValueRequest req) {
+        WorkExperiencePayoutValue work_exp = new WorkExperiencePayoutValue(req);
         entityManager.persist(work_exp);
     }
 
     @Transactional
     @Override
     public void update(WorkExperiencePayoutValueRequest work_exp_req) {
-        WorkExperiencePayoutValue work_exp = entityManager.find(WorkExperiencePayoutValue.class, work_exp_req.getId());
+        WorkExperiencePayoutValue work_exp = entityManager.find(WorkExperiencePayoutValue.class, work_exp_req.getExperienceId());
         work_exp.setWorkExperience(work_exp_req.getWorkExperience());
         work_exp.setValue(work_exp_req.getValue());
     }

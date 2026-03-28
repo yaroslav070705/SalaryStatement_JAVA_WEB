@@ -38,7 +38,7 @@ public class ProjectDAO implements ProjectInterfaceDAO {
     @Transactional
     @Override
     public void update(ProjectRequest project_req){
-        Project project = entityManager.find(Project.class, project_req.getId());
+        Project project = entityManager.find(Project.class, project_req.getProjectId());
 
         project.setStartDate(project_req.getStartDate());
         project.setProjectName(project_req.getProjectName());

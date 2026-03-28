@@ -34,13 +34,12 @@ public class RolePayoutValueDAO implements RolePayoutValueInterfaceDAO {
     @Transactional
     @Override
     public void insert(RolePayoutValueRequest req) {
-        RolePayoutValue entity = new RolePayoutValue();
+        RolePayoutValue entity = new RolePayoutValue(req);
 
         Project project = entityManager.find(Project.class, req.getProjectId());
         Role role = entityManager.find(Role.class, req.getRoleId());
 
         entity.setId(project, role);
-        entity.setValue(req.getValue());
 
         entityManager.persist(entity);
     }

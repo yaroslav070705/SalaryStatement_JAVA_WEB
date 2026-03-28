@@ -38,7 +38,7 @@ public class PostDAO implements PostInterfaceDAO{
     @Transactional
     @Override
     public void update(PostRequest req) {
-        Post post = entityManager.find(Post.class, req.getId());
+        Post post = entityManager.find(Post.class, req.getPostId());
 
         post.setPostName(req.getPostName());
         post.setPayoutValue(req.getPayoutValue());

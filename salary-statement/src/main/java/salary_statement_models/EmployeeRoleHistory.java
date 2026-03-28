@@ -1,5 +1,7 @@
 package salary_statement_models;
 
+import dto_models.EmployeeRoleHistoryRequest;
+
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -10,6 +12,12 @@ public class EmployeeRoleHistory {
     private Role role_id;
     private LocalDate start_date;
     private LocalDate end_date;
+
+    public EmployeeRoleHistory() {}
+    public EmployeeRoleHistory(EmployeeRoleHistoryRequest req) {
+        this.start_date = req.getStartDate();
+        this.end_date = req.getEndDate();
+    }
 
     public UUID[] getId() {
         return new UUID[]{employee_id.getId(), project_id.getId(), role_id.getId()};

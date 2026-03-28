@@ -30,9 +30,8 @@ public class RoleDAO implements RoleInterfaceDAO{
 
     @Transactional
     @Override
-    public void insert(RoleRequest role_req) {
-       Role role = new Role();
-       role.setRoleName(role_req.getRoleName());
+    public void insert(RoleRequest req) {
+       Role role = new Role(req);
 
        entityManager.persist(role);
     }
@@ -40,7 +39,7 @@ public class RoleDAO implements RoleInterfaceDAO{
     @Transactional
     @Override
     public void update(RoleRequest role_req) {
-        Role role = entityManager.find(Role.class, role_req.getId());
+        Role role = entityManager.find(Role.class, role_req.getRoleId());
 
         role.setRoleName(role_req.getRoleName());
     }

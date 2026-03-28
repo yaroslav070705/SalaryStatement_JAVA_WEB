@@ -1,11 +1,18 @@
 package salary_statement_models;
 
+import dto_models.RoleRequest;
+
 import java.util.UUID;
 
 
 public class Role {
     private UUID role_id;
     private String role_name;
+
+    public Role() {}
+    public  Role(RoleRequest req) {
+        this.role_name = getRoleName();
+    }
 
     public UUID getId() {
         return role_id;
