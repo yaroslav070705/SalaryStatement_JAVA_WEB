@@ -13,7 +13,9 @@ In file "UseCases" you can see usecases of web-application.
 
 File "SalaryDB.sql" contains sql-script for creating database. 
 
-You can find JAVA classes for database tables in /salary-statement/src/main/java/salary_statement_models
+You can find JAVA classes for database tables in /salary-statement/src/main/java/salary_statement_models:
+  ./dao_models - DAO objects for every entity
+  ./dto_modes - request objects
 
 salary-statement/src/main/resources/META-INF/orm.xml - mapping java classes to database tables file
 
