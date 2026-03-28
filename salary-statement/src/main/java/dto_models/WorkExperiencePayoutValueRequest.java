@@ -16,7 +16,7 @@ public class WorkExperiencePayoutValueRequest {
     public Double getValue() {
         return value;
     }
-    
+
     public void setExperienceId(UUID experience_id) { this.experience_id = experience_id; }
     public void setWorkExperience(int work_experience) {
         this.work_experience = work_experience;
