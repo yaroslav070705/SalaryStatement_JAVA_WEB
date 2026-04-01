@@ -8,7 +8,7 @@
           https://jakarta.ee/xml/ns/persistence/orm/orm_3_0.xsd"
         version="3.0">
 
-    <entity class="salary_statement_models.Employee">
+    <entity class="salary_statement_models.Employee" access="FIELD">
 
         <table name="Employees"/>
 
@@ -39,22 +39,18 @@
                 <column name="work_experience"/>
             </basic>
 
-            <basic name="post_id">
-                    <column name="post_id"/>
-            </basic>
-
             <basic name="fired">
                 <column name="fired"/>
             </basic>
 
-            <many-to-one name="post_id" target-entity="Post">
+            <many-to-one name="post_id" target-entity="salary_statement_models.Post">
                 <join-column name="post_id"/>
             </many-to-one>
         </attributes>
 
     </entity>
 
-    <entity class="Post">
+    <entity class="Post" access="FIELD">
 
         <table name="Posts"/>
 
@@ -77,7 +73,7 @@
 
     </entity>
 
-    <entity class="salary_statement_models.EmployeePostHistory">
+    <entity class="salary_statement_models.EmployeePostHistory" access="FIELD">
 
         <table name="Employees_Posts_History"/>
 
@@ -101,18 +97,18 @@
                 <column name="end_date"/>
             </basic>
 
-            <many-to-one name="employee_id" target-entity="Employee">
+            <many-to-one name="employee_id" target-entity="salary_statement_models.Employee">
                 <join-column name="employee_id"/>
             </many-to-one>
 
-            <many-to-one name="post_id" target-entity="Post">
+            <many-to-one name="post_id" target-entity="salary_statement_models.Post">
                 <join-column name="post_id"/>
             </many-to-one>
         </attributes>
 
     </entity>
 
-    <entity class="salary_statement_models.PayoutType">
+    <entity class="salary_statement_models.PayoutType" access="FIELD">
 
         <table name="Payout_Types"/>
 
@@ -131,7 +127,7 @@
 
     </entity>
 
-    <entity class="salary_statement_models.Payout">
+    <entity class="salary_statement_models.Payout" access="FIELD">
 
         <table name="Payouts"/>
 
@@ -155,18 +151,18 @@
                 <column name="value"/>
             </basic>
 
-            <many-to-one name="employee_id" target-entity="Employee">
+            <many-to-one name="employee_id" target-entity="salary_statement_models.Employee">
                 <join-column name="employee_id"/>
             </many-to-one>
 
-            <many-to-one name="payout_type_id" target-entity="PayoutType">
+            <many-to-one name="payout_type_id" target-entity="salary_statement_models.PayoutType">
                 <join-column name="payout_type_id"/>
             </many-to-one>
         </attributes>
 
     </entity>
 
-    <entity class="salary_statement_models.Project">
+    <entity class="salary_statement_models.Project" access="FIELD">
 
         <table name="Projects"/>
 
@@ -193,7 +189,7 @@
 
     </entity>
 
-    <entity class="salary_statement_models.Role">
+    <entity class="salary_statement_models.Role" access="FIELD">
 
         <table name="Roles"/>
 
@@ -212,7 +208,7 @@
 
     </entity>
 
-    <entity class="salary_statement_models.ProjectSetup">
+    <entity class="salary_statement_models.ProjectSetup" access="FIELD">
 
         <table name="Projects_Setup"/>
 
@@ -232,18 +228,18 @@
                 <column name="role_id"/>
             </basic>
 
-            <many-to-one name="employee_id" target-entity="Employee">
+            <many-to-one name="employee_id" target-entity="salary_statement_models.Employee">
                 <join-column name="employee_id"/>
             </many-to-one>
 
-            <many-to-one name="project_id" target-entity="Project">
+            <many-to-one name="project_id" target-entity="salary_statement_models.Project">
                 <join-column name="project_id"/>
             </many-to-one>
         </attributes>
 
     </entity>
 
-    <entity class="salary_statement_models.EmployeeRoleHistory">
+    <entity class="salary_statement_models.EmployeeRoleHistory" access="FIELD">
 
         <table name="Employees_Roles_History"/>
 
@@ -271,22 +267,22 @@
                 <column name="end_date"/>
             </basic>
 
-            <many-to-one name="employee_id" target-entity="Employee">
+            <many-to-one name="employee_id" target-entity="salary_statement_models.Employee">
                 <join-column name="employee_id"/>
             </many-to-one>
 
-            <many-to-one name="project_id" target-entity="Project">
+            <many-to-one name="project_id" target-entity="salary_statement_models.Project">
                 <join-column name="project_id"/>
             </many-to-one>
 
-            <many-to-one name="role_id" target-entity="Role">
+            <many-to-one name="role_id" target-entity="salary_statement_models.Role">
                 <join-column name="role_id"/>
             </many-to-one>
         </attributes>
 
     </entity>
 
-    <entity class="salary_statement_models.RolePayoutValue">
+    <entity class="salary_statement_models.RolePayoutValue" access="FIELD">
 
         <table name="Role_Payout_Value"/>
 
@@ -306,18 +302,18 @@
                 <column name="value"/>
             </basic>
 
-            <many-to-one name="project_id" target-entity="Project">
+            <many-to-one name="project_id" target-entity="salary_statement_models.Project">
                 <join-column name="project_id"/>
             </many-to-one>
 
-            <many-to-one name="role_id" target-entity="Role">
+            <many-to-one name="role_id" target-entity="salary_statement_models.Role">
                 <join-column name="role_id"/>
             </many-to-one>
         </attributes>
 
     </entity>
 
-    <entity class="salary_statement_models.WorkExperiencePayoutValue">
+    <entity class="salary_statement_models.WorkExperiencePayoutValue" access="FIELD">
 
         <table name="Work_Experience_Payout_Value"/>
 

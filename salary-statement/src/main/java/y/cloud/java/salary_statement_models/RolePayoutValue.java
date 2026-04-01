@@ -1,0 +1,34 @@
+package y.cloud.java.salary_statement_models;
+
+import y.cloud.java.dto_models.RolePayoutValueRequest;
+
+import java.util.UUID;
+
+
+public class RolePayoutValue {
+    private Project project_id;
+    private Role role_id;
+    private Double value;
+
+    public RolePayoutValue() {}
+    public RolePayoutValue(RolePayoutValueRequest req) {
+        this.value = req.getValue();
+    }
+
+    public RolePayoutValuePK getId() {
+        return new RolePayoutValuePK(project_id.getId(), role_id.getId());
+    }
+
+    public void setId(Project project_id, Role role_id) {
+        this.project_id = project_id;
+        this.role_id = role_id;
+    }
+
+    public Double getValue() {
+        return value;
+    }
+
+    public void setValue(Double value) {
+        this.value = value;
+    }
+}

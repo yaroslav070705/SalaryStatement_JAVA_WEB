@@ -1,26 +1,25 @@
 package tests;
 
-import dao_models.EmployeeDAO;
-import dao_models.PostDAO;
-import dto_models.EmployeeRequest;
+import y.cloud.java.dao_models.EmployeeDAO;
+import y.cloud.java.dao_models.PostDAO;
+import y.cloud.java.dto_models.EmployeeRequest;
 
-import org.testng.annotations.*;
-import salary_statement_models.Employee;
-
-import static org.testng.Assert.assertNotNull;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+
+@SpringBootTest
 public class EmployeeTest {
-    private EmployeeDAO employee_dao = new EmployeeDAO();
-    private PostDAO post_dao = new PostDAO();
-
-    @BeforeClass
-    public void setUp() {
-
-    }
+    @Autowired
+    private EmployeeDAO employee_dao;
+    @Autowired
+    private PostDAO post_dao;
 
     @Test
     public void addEmployeeTest() {

@@ -1,8 +1,0 @@
-package dao_models;
-
-import dto_models.EmployeeRoleHistoryRequest;
-import salary_statement_models.EmployeeRoleHistory;
-import salary_statement_models.EmployeeRoleHistoryPK;
-
-public interface EmployeeRoleHistoryInterfaceDAO extends BaseInterfaceDAO<EmployeeRoleHistory, EmployeeRoleHistoryRequest, EmployeeRoleHistoryPK>{
-}
