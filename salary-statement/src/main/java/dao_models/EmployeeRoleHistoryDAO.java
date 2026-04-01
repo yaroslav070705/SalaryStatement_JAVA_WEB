@@ -28,7 +28,7 @@ public class EmployeeRoleHistoryDAO implements EmployeeRoleHistoryInterfaceDAO {
 
     @Transactional
     @Override
-    public void insert(EmployeeRoleHistoryRequest req) {
+    public EmployeePostHistoryPK insert(EmployeeRoleHistoryRequest req) {
         EmployeeRoleHistory entity = new EmployeeRoleHistory(req);
 
         Employee employee = entityManager.find(Employee.class, req.getEmployeeId());
@@ -38,6 +38,8 @@ public class EmployeeRoleHistoryDAO implements EmployeeRoleHistoryInterfaceDAO {
         entity.setId(employee, project, role);
 
         entityManager.persist(entity);
+
+        return entity.getId();
     }
 
     @Transactional

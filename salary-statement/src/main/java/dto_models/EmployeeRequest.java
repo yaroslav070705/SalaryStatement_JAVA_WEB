@@ -46,9 +46,7 @@ public class EmployeeRequest {
     public void setEmployeeId(UUID employee_id) {
         this.employee_id = employee_id;
     }
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setName(String name) { this.name = name; }
     public void setSurname(String surname) {
         this.surname = surname;
     }

@@ -29,7 +29,7 @@ public class ProjectDAO implements ProjectInterfaceDAO {
 
     @Transactional
     @Override
-    public void insert(ProjectRequest project_req){
+    public UUID insert(ProjectRequest project_req){
         Project project = new Project(project_req);
 
         entityManager.persist(project);

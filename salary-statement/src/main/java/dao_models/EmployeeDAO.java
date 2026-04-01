@@ -1,17 +1,24 @@
 package dao_models;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import salary_statement_models.Employee;
 import salary_statement_models.EmployeePostHistory;
 import salary_statement_models.EmployeePostHistoryPK;
 import salary_statement_models.Post;
 
 import dto_models.EmployeeRequest;
+import models_utils.NotStated;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.time.LocalDate;
@@ -22,10 +29,57 @@ public class EmployeeDAO implements EmployeeInterfaceDAO{
     @PersistenceContext
     private EntityManager entityManager;
 
+    private final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+
+    @Override
     public Employee findById(UUID id) {
         return entityManager.find(Employee.class, id);
     }
 
+    @Override
+    public List<Employee> findByParams(EmployeeRequest req) {
+        CriteriaQuery<Employee> query = cb.createQuery(Employee.class);
+        Root<Employee> root = query.from(Employee.class);
+        List<Predicate> predicates = new ArrayList<>();
+
+        if(!req.getName().isEmpty()) {
+            predicates.add(cb.equal(root.get("name"), req.getName()));
+        }
+        if(!req.getSurname().isEmpty()) {
+            predicates.add(cb.equal(root.get("surname"), req.getSurname()));
+        }
+        if(!req.getMiddleName().isEmpty()) {
+            predicates.add(cb.equal(root.get("middle_name"), req.getMiddleName()));
+        }
+        if(req.getBirthDate() != NotStated.REL.value()) {
+            predicates.add(cb.equal(root.get("birth_date"), req.getBirthDate()));
+        }
+        if(req.getWorkExperience() != (int)NotStated.PRIMITIVE.value()) {
+            predicates.add(cb.equal(root.get("work_experience"), req.getWorkExperience()));
+        }
+        if(req.getPostId() != (UUID)NotStated.ID.value()) {
+            predicates.add(cb.equal(root.get("post_id"), req.getPostId()));
+        }
+
+        predicates.add(cb.equal(root.get("fired"), req.getPostId()));
+
+        query.select(root).where(cb.and(predicates));
+
+        return entityManager.createQuery(query).getResultList();
+    }
+
+    /*public Employee findByParams(EmployeeRequest req) {
+        CriteriaQuery<Employee> query = cb.createQuery(Employee.class);
+        Root<Employee> root = query.from(Employee.class);
+
+        for(Field field : EmployeeRequest.class.getDeclaredFields()) {
+            if(!field.getType().isPrimitive() && field.get(req) != NotStated.REL.value()) {
+
+            }
+        }
+    }*/
+
+    @Override
     public List<Employee> findAll() {
         return entityManager
                 .createQuery("SELECT e FROM Employee e", Employee.class)
@@ -34,17 +88,32 @@ public class EmployeeDAO implements EmployeeInterfaceDAO{
 
     @Transactional
     @Override
-    public void insert(EmployeeRequest emp_req) {
+    public UUID insert(EmployeeRequest emp_req) {
         Employee emp = new Employee(emp_req);
         emp.setPostId(entityManager.find(Post.class, emp_req.getPostId()));
-        entityManager.persist(emp);
+
+        try {
+            entityManager.persist(emp);
+        } catch (Exception e) {
+            emp.setId(null);
+        }
 
         EmployeePostHistory eph = new EmployeePostHistory();
-        Post post = entityManager.find(Post.class, emp.getPostId());
+        Post post = null;
+        try {
+            post = entityManager.find(Post.class, emp.getPostId());
+        } catch(Exception e) {
+            System.out.print("No post with id");
+        }
+
         eph.setId(emp, post);
         eph.setStartDate(LocalDate.now());
         eph.setEndDate(null);
+
         entityManager.persist(eph);
+
+
+        return emp.getId();
     }
 
     @Transactional

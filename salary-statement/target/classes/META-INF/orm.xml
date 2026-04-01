@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<entity-mappings
+        xmlns="https://jakarta.ee/xml/ns/persistence/orm"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+          https://jakarta.ee/xml/ns/persistence/orm
+          https://jakarta.ee/xml/ns/persistence/orm/orm_3_0.xsd"
+        version="3.0">
+
+    <entity class="salary_statement_models.Employee">
+
+        <table name="Employees"/>
+
+        <attributes>
+
+            <id name="employee_id">
+                <column name="employee_id"/>
+                <generated-value generator="system-uuid"/>
+            </id>
+
+            <basic name="name">
+                <column name="name"/>
+            </basic>
+
+            <basic name="surname">
+                <column name="surname"/>
+            </basic>
+
+            <basic name="middle_name">
+                <column name="middle_name"/>
+            </basic>
+
+            <basic name="birth_date">
+                <column name="birth_date"/>
+            </basic>
+
+            <basic name="work_experience">
+                <column name="work_experience"/>
+            </basic>
+
+            <basic name="post_id">
+                    <column name="post_id"/>
+            </basic>
+
+            <basic name="fired">
+                <column name="fired"/>
+            </basic>
+
+            <many-to-one name="post_id" target-entity="Post">
+                <join-column name="post_id"/>
+            </many-to-one>
+        </attributes>
+
+    </entity>
+
+    <entity class="Post">
+
+        <table name="Posts"/>
+
+        <attributes>
+
+            <id name="post_id">
+                <column name="post_id"/>
+                <generated-value generator="system-uuid"/>
+            </id>
+
+            <basic name="post_name">
+                <column name="post_name"/>
+            </basic>
+
+            <basic name="payout_value">
+                <column name="payout_value"/>
+            </basic>
+
+        </attributes>
+
+    </entity>
+
+    <entity class="salary_statement_models.EmployeePostHistory">
+
+        <table name="Employees_Posts_History"/>
+
+        <id-class class="salary_statement_models.EmployeePostHistoryPK"/>
+
+        <attributes>
+
+            <id name="employee_id">
+                <column name="employee_id"/>
+            </id>
+
+            <id name="post_id">
+                <column name="post_id"/>
+            </id>
+
+            <basic name="start_date">
+                <column name="start_date"/>
+            </basic>
+
+            <basic name="end_date">
+                <column name="end_date"/>
+            </basic>
+
+            <many-to-one name="employee_id" target-entity="Employee">
+                <join-column name="employee_id"/>
+            </many-to-one>
+
+            <many-to-one name="post_id" target-entity="Post">
+                <join-column name="post_id"/>
+            </many-to-one>
+        </attributes>
+
+    </entity>
+
+    <entity class="salary_statement_models.PayoutType">
+
+        <table name="Payout_Types"/>
+
+        <attributes>
+
+            <id name="payout_type_id">
+                <column name="payout_type_id"/>
+                <generated-value generator="system-uuid"/>
+            </id>
+
+            <basic name="payout_type">
+                <column name="payout_type"/>
+            </basic>
+
+        </attributes>
+
+    </entity>
+
+    <entity class="salary_statement_models.Payout">
+
+        <table name="Payouts"/>
+
+        <id-class class="salary_statement_models.PayoutPK"/>
+
+        <attributes>
+
+            <id name="employee_id">
+                <column name="employee_id"/>
+            </id>
+
+            <id name="payout_type_id">
+                <column name="payout_type_id"/>
+            </id>
+
+            <basic name="date">
+                <column name="date"/>
+            </basic>
+
+            <basic name="value">
+                <column name="value"/>
+            </basic>
+
+            <many-to-one name="employee_id" target-entity="Employee">
+                <join-column name="employee_id"/>
+            </many-to-one>
+
+            <many-to-one name="payout_type_id" target-entity="PayoutType">
+                <join-column name="payout_type_id"/>
+            </many-to-one>
+        </attributes>
+
+    </entity>
+
+    <entity class="salary_statement_models.Project">
+
+        <table name="Projects"/>
+
+        <attributes>
+
+            <id name="project_id">
+                <column name="project_id"/>
+                <generated-value generator="system-uuid"/>
+            </id>
+
+            <basic name="project_name">
+                <column name="project_name"/>
+            </basic>
+
+            <basic name="start_date">
+                <column name="start_date"/>
+            </basic>
+
+            <basic name="end_date">
+                <column name="end_date"/>
+            </basic>
+
+        </attributes>
+
+    </entity>
+
+    <entity class="salary_statement_models.Role">
+
+        <table name="Roles"/>
+
+        <attributes>
+
+            <id name="role_id">
+                <column name="role_id"/>
+                <generated-value generator="system-uuid"/>
+            </id>
+
+            <basic name="role_name">
+                <column name="role_name"/>
+            </basic>
+
+        </attributes>
+
+    </entity>
+
+    <entity class="salary_statement_models.ProjectSetup">
+
+        <table name="Projects_Setup"/>
+
+        <id-class class="salary_statement_models.ProjectSetupPK"/>
+
+        <attributes>
+
+            <id name="employee_id">
+                <column name="employee_id"/>
+            </id>
+
+            <id name="project_id">
+                <column name="project_id"/>
+            </id>
+
+            <basic name="role_id">
+                <column name="role_id"/>
+            </basic>
+
+            <many-to-one name="employee_id" target-entity="Employee">
+                <join-column name="employee_id"/>
+            </many-to-one>
+
+            <many-to-one name="project_id" target-entity="Project">
+                <join-column name="project_id"/>
+            </many-to-one>
+        </attributes>
+
+    </entity>
+
+    <entity class="salary_statement_models.EmployeeRoleHistory">
+
+        <table name="Employees_Roles_History"/>
+
+        <id-class class="salary_statement_models.EmployeeRoleHistoryPK"/>
+
+        <attributes>
+
+            <id name="employee_id">
+                <column name="employee_id"/>
+            </id>
+
+            <id name="project_id">
+                <column name="project_id"/>
+            </id>
+
+            <id name="role_id">
+                <column name="role_id"/>
+            </id>
+
+            <basic name="start_date">
+                <column name="start_date"/>
+            </basic>
+
+            <basic name="end_date">
+                <column name="end_date"/>
+            </basic>
+
+            <many-to-one name="employee_id" target-entity="Employee">
+                <join-column name="employee_id"/>
+            </many-to-one>
+
+            <many-to-one name="project_id" target-entity="Project">
+                <join-column name="project_id"/>
+            </many-to-one>
+
+            <many-to-one name="role_id" target-entity="Role">
+                <join-column name="role_id"/>
+            </many-to-one>
+        </attributes>
+
+    </entity>
+
+    <entity class="salary_statement_models.RolePayoutValue">
+
+        <table name="Role_Payout_Value"/>
+
+        <id-class class="salary_statement_models.RolePayoutValuePK"/>
+
+        <attributes>
+
+            <id name="project_id">
+                <column name="project_id"/>
+            </id>
+
+            <id name="role_id">
+                <column name="role_id"/>
+            </id>
+
+            <basic name="value">
+                <column name="value"/>
+            </basic>
+
+            <many-to-one name="project_id" target-entity="Project">
+                <join-column name="project_id"/>
+            </many-to-one>
+
+            <many-to-one name="role_id" target-entity="Role">
+                <join-column name="role_id"/>
+            </many-to-one>
+        </attributes>
+
+    </entity>
+
+    <entity class="salary_statement_models.WorkExperiencePayoutValue">
+
+        <table name="Work_Experience_Payout_Value"/>
+
+        <attributes>
+
+            <id name="experience_id">
+                <column name="experience_id"/>
+                <generated-value generator="system-uuid"/>
+            </id>
+
+            <basic name="work_experience">
+                <column name="work_experience"/>
+            </basic>
+
+            <basic name="value">
+                <column name="value"/>
+            </basic>
+
+        </attributes>
+
+    </entity>
+
+</entity-mappings>
