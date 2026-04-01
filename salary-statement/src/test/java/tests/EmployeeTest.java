@@ -1,5 +1,6 @@
 package tests;
 
+import y.cloud.java.App;
 import y.cloud.java.dao_models.EmployeeDAO;
 import y.cloud.java.dao_models.PostDAO;
 import y.cloud.java.dto_models.EmployeeRequest;
@@ -14,7 +15,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
-@SpringBootTest
+@SpringBootTest(classes = App.class)
 public class EmployeeTest {
     @Autowired
     private EmployeeDAO employee_dao;

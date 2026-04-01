@@ -33,6 +33,11 @@
       <artifactId>spring-boot-starter-data-jpa</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <scope>runtime</scope>
+    </dependency>
 
     <!-- тесты: JUnit 5, Spring Boot Test, Mockito и т.д. -->
     <dependency>

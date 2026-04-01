@@ -8,7 +8,7 @@
           https://jakarta.ee/xml/ns/persistence/orm/orm_3_0.xsd"
         version="3.0">
 
-    <entity class="salary_statement_models.Employee" access="FIELD">
+    <entity class="y.cloud.java.salary_statement_models.Employee" access="FIELD">
 
         <table name="Employees"/>
 
@@ -43,14 +43,16 @@
                 <column name="fired"/>
             </basic>
 
-            <many-to-one name="post_id" target-entity="salary_statement_models.Post">
-                <join-column name="post_id"/>
+            <many-to-one name="post_id" target-entity="y.cloud.java.salary_statement_models.Post">
+                <join-column name="post_id"
+                             insertable="false"
+                             updatable="false"/>
             </many-to-one>
         </attributes>
 
     </entity>
 
-    <entity class="Post" access="FIELD">
+    <entity class="y.cloud.java.salary_statement_models.Post" access="FIELD">
 
         <table name="Posts"/>
 
@@ -73,11 +75,11 @@
 
     </entity>
 
-    <entity class="salary_statement_models.EmployeePostHistory" access="FIELD">
+    <entity class="y.cloud.java.salary_statement_models.EmployeePostHistory" access="FIELD">
 
         <table name="Employees_Posts_History"/>
 
-        <id-class class="salary_statement_models.EmployeePostHistoryPK"/>
+        <id-class class="y.cloud.java.salary_statement_models.EmployeePostHistoryPK"/>
 
         <attributes>
 
@@ -97,18 +99,22 @@
                 <column name="end_date"/>
             </basic>
 
-            <many-to-one name="employee_id" target-entity="salary_statement_models.Employee">
-                <join-column name="employee_id"/>
+            <many-to-one name="employee_id" target-entity="y.cloud.java.salary_statement_models.Employee">
+                <join-column name="employee_id"
+                             insertable="false"
+                             updatable="false"/>
             </many-to-one>
 
-            <many-to-one name="post_id" target-entity="salary_statement_models.Post">
-                <join-column name="post_id"/>
+            <many-to-one name="post_id" target-entity="y.cloud.java.salary_statement_models.Post">
+                <join-column name="post_id"
+                             insertable="false"
+                             updatable="false"/>
             </many-to-one>
         </attributes>
 
     </entity>
 
-    <entity class="salary_statement_models.PayoutType" access="FIELD">
+    <entity class="y.cloud.java.salary_statement_models.PayoutType" access="FIELD">
 
         <table name="Payout_Types"/>
 
@@ -127,11 +133,11 @@
 
     </entity>
 
-    <entity class="salary_statement_models.Payout" access="FIELD">
+    <entity class="y.cloud.java.salary_statement_models.Payout" access="FIELD">
 
         <table name="Payouts"/>
 
-        <id-class class="salary_statement_models.PayoutPK"/>
+        <id-class class="y.cloud.java.salary_statement_models.PayoutPK"/>
 
         <attributes>
 
@@ -151,18 +157,22 @@
                 <column name="value"/>
             </basic>
 
-            <many-to-one name="employee_id" target-entity="salary_statement_models.Employee">
-                <join-column name="employee_id"/>
+            <many-to-one name="employee_id" target-entity="y.cloud.java.salary_statement_models.Employee">
+                <join-column name="employee_id"
+                             insertable="false"
+                             updatable="false"/>
             </many-to-one>
 
-            <many-to-one name="payout_type_id" target-entity="salary_statement_models.PayoutType">
-                <join-column name="payout_type_id"/>
+            <many-to-one name="payout_type_id" target-entity="y.cloud.java.salary_statement_models.PayoutType">
+                <join-column name="payout_type_id"
+                             insertable="false"
+                             updatable="false"/>
             </many-to-one>
         </attributes>
 
     </entity>
 
-    <entity class="salary_statement_models.Project" access="FIELD">
+    <entity class="y.cloud.java.salary_statement_models.Project" access="FIELD">
 
         <table name="Projects"/>
 
@@ -189,7 +199,7 @@
 
     </entity>
 
-    <entity class="salary_statement_models.Role" access="FIELD">
+    <entity class="y.cloud.java.salary_statement_models.Role" access="FIELD">
 
         <table name="Roles"/>
 
@@ -208,11 +218,11 @@
 
     </entity>
 
-    <entity class="salary_statement_models.ProjectSetup" access="FIELD">
+    <entity class="y.cloud.java.salary_statement_models.ProjectSetup" access="FIELD">
 
         <table name="Projects_Setup"/>
 
-        <id-class class="salary_statement_models.ProjectSetupPK"/>
+        <id-class class="y.cloud.java.salary_statement_models.ProjectSetupPK"/>
 
         <attributes>
 
@@ -228,22 +238,26 @@
                 <column name="role_id"/>
             </basic>
 
-            <many-to-one name="employee_id" target-entity="salary_statement_models.Employee">
-                <join-column name="employee_id"/>
+            <many-to-one name="employee_id" target-entity="y.cloud.java.salary_statement_models.Employee">
+                <join-column name="employee_id"
+                             insertable="false"
+                             updatable="false"/>
             </many-to-one>
 
-            <many-to-one name="project_id" target-entity="salary_statement_models.Project">
-                <join-column name="project_id"/>
+            <many-to-one name="project_id" target-entity="y.cloud.java.salary_statement_models.Project">
+                <join-column name="project_id"
+                             insertable="false"
+                             updatable="false"/>
             </many-to-one>
         </attributes>
 
     </entity>
 
-    <entity class="salary_statement_models.EmployeeRoleHistory" access="FIELD">
+    <entity class="y.cloud.java.salary_statement_models.EmployeeRoleHistory" access="FIELD">
 
         <table name="Employees_Roles_History"/>
 
-        <id-class class="salary_statement_models.EmployeeRoleHistoryPK"/>
+        <id-class class="y.cloud.java.salary_statement_models.EmployeeRoleHistoryPK"/>
 
         <attributes>
 
@@ -267,26 +281,32 @@
                 <column name="end_date"/>
             </basic>
 
-            <many-to-one name="employee_id" target-entity="salary_statement_models.Employee">
-                <join-column name="employee_id"/>
+            <many-to-one name="employee_id" target-entity="y.cloud.java.salary_statement_models.Employee">
+                <join-column name="employee_id"
+                             insertable="false"
+                             updatable="false"/>
             </many-to-one>
 
-            <many-to-one name="project_id" target-entity="salary_statement_models.Project">
-                <join-column name="project_id"/>
+            <many-to-one name="project_id" target-entity="y.cloud.java.salary_statement_models.Project">
+                <join-column name="project_id"
+                             insertable="false"
+                             updatable="false"/>
             </many-to-one>
 
-            <many-to-one name="role_id" target-entity="salary_statement_models.Role">
-                <join-column name="role_id"/>
+            <many-to-one name="role_id" target-entity="y.cloud.java.salary_statement_models.Role">
+                <join-column name="role_id"
+                             insertable="false"
+                             updatable="false"/>
             </many-to-one>
         </attributes>
 
     </entity>
 
-    <entity class="salary_statement_models.RolePayoutValue" access="FIELD">
+    <entity class="y.cloud.java.salary_statement_models.RolePayoutValue" access="FIELD">
 
         <table name="Role_Payout_Value"/>
 
-        <id-class class="salary_statement_models.RolePayoutValuePK"/>
+        <id-class class="y.cloud.java.salary_statement_models.RolePayoutValuePK"/>
 
         <attributes>
 
@@ -302,18 +322,22 @@
                 <column name="value"/>
             </basic>
 
-            <many-to-one name="project_id" target-entity="salary_statement_models.Project">
-                <join-column name="project_id"/>
+            <many-to-one name="project_id" target-entity="y.cloud.java.salary_statement_models.Project">
+                <join-column name="project_id"
+                             insertable="false"
+                             updatable="false"/>
             </many-to-one>
 
-            <many-to-one name="role_id" target-entity="salary_statement_models.Role">
-                <join-column name="role_id"/>
+            <many-to-one name="role_id" target-entity="y.cloud.java.salary_statement_models.Role">
+                <join-column name="role_id"
+                             insertable="false"
+                             updatable="false"/>
             </many-to-one>
         </attributes>
 
     </entity>
 
-    <entity class="salary_statement_models.WorkExperiencePayoutValue" access="FIELD">
+    <entity class="y.cloud.java.salary_statement_models.WorkExperiencePayoutValue" access="FIELD">
 
         <table name="Work_Experience_Payout_Value"/>
 
