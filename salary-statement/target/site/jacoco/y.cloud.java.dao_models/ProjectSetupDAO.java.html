@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProjectSetupDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">salary-statement</a> &gt; <a href="index.source.html" class="el_package">y.cloud.java.dao_models</a> &gt; <span class="el_source">ProjectSetupDAO.java</span></div><h1>ProjectSetupDAO.java</h1><pre class="source lang-java linenums">package y.cloud.java.dao_models;
+
+import y.cloud.java.dto_models.ProjectSetupRequest;
+import org.springframework.transaction.annotation.Transactional;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import org.springframework.stereotype.Repository;
+import y.cloud.java.salary_statement_models.*;
+
+import java.util.List;
+
+@Repository
+<span class="fc" id="L14">public class ProjectSetupDAO implements ProjectSetupInterfaceDAO {</span>
+
+    @PersistenceContext
+    EntityManager entityManager;
+
+    @Override
+    public ProjectSetup findById(ProjectSetupPK id) {
+<span class="fc" id="L21">        return entityManager.find(ProjectSetup.class, id);</span>
+    }
+
+    @Override
+    public List&lt;ProjectSetup&gt; findAll() {
+<span class="fc" id="L26">        return entityManager.createQuery(&quot;SELECT ps FROM ProjectSetup ps&quot;, ProjectSetup.class).getResultList();</span>
+    }
+
+    @Transactional
+    @Override
+    public ProjectSetupPK insert(ProjectSetupRequest project_setup_req) {
+<span class="fc" id="L32">        Employee employee = entityManager.find(Employee.class, project_setup_req.getEmployeeId());</span>
+<span class="fc" id="L33">        Project project = entityManager.find(Project.class, project_setup_req.getProjectId());</span>
+<span class="fc" id="L34">        Role role = entityManager.find(Role.class, project_setup_req.getRoleId());</span>
+
+<span class="fc" id="L36">        ProjectSetup project_setup = new ProjectSetup();</span>
+<span class="fc" id="L37">        project_setup.setId(employee, project);</span>
+<span class="fc" id="L38">        project_setup.setRoleId(role);</span>
+<span class="fc" id="L39">        entityManager.persist(project_setup);</span>
+
+<span class="fc" id="L41">        return project_setup.getId();</span>
+
+    }
+
+    @Transactional
+    @Override
+    public ProjectSetup update(ProjectSetupRequest project_setup_req) {
+<span class="fc" id="L48">        ProjectSetup project_setup = entityManager.find(ProjectSetup.class, new ProjectSetupPK(project_setup_req.getEmployeeId(),</span>
+<span class="fc" id="L49">                                                                                               project_setup_req.getProjectId()));</span>
+
+<span class="fc" id="L51">        Role role_id = entityManager.find(Role.class, project_setup_req.getRoleId());</span>
+<span class="fc" id="L52">        project_setup.setRoleId(role_id);</span>
+
+<span class="fc" id="L54">        return project_setup;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

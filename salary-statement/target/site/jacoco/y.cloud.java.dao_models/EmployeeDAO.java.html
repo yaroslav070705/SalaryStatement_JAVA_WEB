@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmployeeDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">salary-statement</a> &gt; <a href="index.source.html" class="el_package">y.cloud.java.dao_models</a> &gt; <span class="el_source">EmployeeDAO.java</span></div><h1>EmployeeDAO.java</h1><pre class="source lang-java linenums">package y.cloud.java.dao_models;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import y.cloud.java.salary_statement_models.*;
+
+import y.cloud.java.dto_models.EmployeeRequest;
+import y.cloud.java.models_utils.NotStated;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import java.time.LocalDate;
+
+@Repository
+<span class="fc" id="L24">public class EmployeeDAO implements EmployeeInterfaceDAO{</span>
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    private CriteriaBuilder cb;
+
+    @PostConstruct
+    public void init() {
+<span class="fc" id="L33">        cb = entityManager.getCriteriaBuilder();</span>
+<span class="fc" id="L34">    }</span>
+
+    @Override
+    public Employee findById(UUID id) {
+<span class="fc" id="L38">        return entityManager.find(Employee.class, id);</span>
+    }
+
+    @Override
+    public List&lt;Employee&gt; findByParams(EmployeeRequest req) {
+<span class="fc" id="L43">        CriteriaQuery&lt;Employee&gt; query = cb.createQuery(Employee.class);</span>
+<span class="fc" id="L44">        Root&lt;Employee&gt; root = query.from(Employee.class);</span>
+<span class="fc" id="L45">        List&lt;Predicate&gt; predicates = new ArrayList&lt;&gt;();</span>
+
+<span class="pc bpc" id="L47" title="1 of 2 branches missed.">        if(!req.getName().isEmpty()) {</span>
+<span class="fc" id="L48">            predicates.add(cb.equal(root.get(&quot;name&quot;), req.getName()));</span>
+        }
+<span class="pc bpc" id="L50" title="1 of 2 branches missed.">        if(!req.getSurname().isEmpty()) {</span>
+<span class="fc" id="L51">            predicates.add(cb.equal(root.get(&quot;surname&quot;), req.getSurname()));</span>
+        }
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">        if(!req.getMiddleName().isEmpty()) {</span>
+<span class="fc" id="L54">            predicates.add(cb.equal(root.get(&quot;middle_name&quot;), req.getMiddleName()));</span>
+        }
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">        if(!req.getBirthDate().equals(NotStated.REL.value())) {</span>
+<span class="fc" id="L57">            predicates.add(cb.equal(root.get(&quot;birth_date&quot;), req.getBirthDate()));</span>
+        }
+<span class="pc bpc" id="L59" title="1 of 2 branches missed.">        if(req.getWorkExperience() != (int)NotStated.PRIMITIVE.value()) {</span>
+<span class="fc" id="L60">            predicates.add(cb.equal(root.get(&quot;work_experience&quot;), req.getWorkExperience()));</span>
+        }
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">        if(!req.getPostId().equals((UUID)NotStated.ID.value())) {</span>
+<span class="fc" id="L63">            predicates.add(cb.equal(root.get(&quot;post_id&quot;).get(&quot;post_id&quot;), req.getPostId()));</span>
+        }
+
+<span class="fc" id="L66">        predicates.add(cb.equal(root.get(&quot;fired&quot;), req.getFired()));</span>
+
+<span class="fc" id="L68">        query.select(root).where(cb.and(predicates.toArray(new Predicate[0])));</span>
+
+<span class="fc" id="L70">        return entityManager.createQuery(query).getResultList();</span>
+    }
+
+    /*public Employee findByParams(EmployeeRequest req) {
+        CriteriaQuery&lt;Employee&gt; query = cb.createQuery(Employee.class);
+        Root&lt;Employee&gt; root = query.from(Employee.class);
+
+        for(Field field : EmployeeRequest.class.getDeclaredFields()) {
+            if(!field.getType().isPrimitive() &amp;&amp; field.get(req) != NotStated.REL.value()) {
+
+            }
+        }
+    }*/
+
+    @Override
+    public List&lt;Employee&gt; findAll() {
+<span class="fc" id="L86">        return entityManager</span>
+<span class="fc" id="L87">                .createQuery(&quot;SELECT e FROM Employee e&quot;, Employee.class)</span>
+<span class="fc" id="L88">                .getResultList();</span>
+    }
+
+    @Override
+    public List&lt;Employee&gt; findAllEmployeeByProject(UUID project_id) {
+<span class="fc" id="L93">        return entityManager</span>
+<span class="fc" id="L94">                .createQuery(</span>
+                        &quot;SELECT ps.employee_id FROM ProjectSetup ps &quot; +
+                                &quot;WHERE ps.project_id.project_id = :project_id&quot;,
+                        Employee.class
+                )
+<span class="fc" id="L99">                .setParameter(&quot;project_id&quot;, project_id)</span>
+<span class="fc" id="L100">                .getResultList();</span>
+    }
+
+    @Transactional
+    @Override
+    public UUID insert(EmployeeRequest emp_req) {
+<span class="fc" id="L106">        Employee emp = new Employee(emp_req);</span>
+<span class="fc" id="L107">        emp.setPostId(entityManager.find(Post.class, emp_req.getPostId()));</span>
+<span class="fc" id="L108">        entityManager.persist(emp);</span>
+
+<span class="fc" id="L110">        EmployeePostHistory eph = new EmployeePostHistory();</span>
+<span class="fc" id="L111">        Post post = entityManager.find(Post.class, emp.getPostId());</span>
+
+<span class="fc" id="L113">        eph.setId(emp, post);</span>
+<span class="fc" id="L114">        eph.setStartDate(LocalDate.now());</span>
+<span class="fc" id="L115">        eph.setEndDate(null);</span>
+<span class="fc" id="L116">        entityManager.persist(eph);</span>
+
+<span class="fc" id="L118">        return emp.getId();</span>
+    }
+
+    @Transactional
+    @Override
+    public Employee update(EmployeeRequest emp_req) {
+<span class="fc" id="L124">        Employee cur_emp = entityManager.find(Employee.class, emp_req.getEmployeeId());</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">        if(emp_req.getPostId() != cur_emp.getPostId()) {</span>
+<span class="fc" id="L126">            UUID prev_post_id = entityManager.find(Employee.class, emp_req.getEmployeeId()).getPostId();</span>
+<span class="fc" id="L127">            EmployeePostHistory prev_emp_post_history = entityManager.find(EmployeePostHistory.class,</span>
+<span class="fc" id="L128">                                                                           new EmployeePostHistoryPK(emp_req.getEmployeeId(), prev_post_id));</span>
+<span class="fc" id="L129">            LocalDate local_date = LocalDate.now();</span>
+<span class="fc" id="L130">            prev_emp_post_history.setEndDate(local_date);</span>
+        }
+
+<span class="fc" id="L133">        cur_emp.setName(emp_req.getName());</span>
+<span class="fc" id="L134">        cur_emp.setSurname(emp_req.getSurname());</span>
+<span class="fc" id="L135">        cur_emp.setMiddleName(emp_req.getMiddleName());</span>
+<span class="fc" id="L136">        cur_emp.setBirtDate(emp_req.getBirthDate());</span>
+<span class="fc" id="L137">        cur_emp.setWorkExperience(emp_req.getWorkExperience());</span>
+
+<span class="fc" id="L139">        return cur_emp;</span>
+    }
+
+    @Transactional
+    @Override
+    public void fire(UUID id) {
+<span class="fc" id="L145">        Employee emp = entityManager.find(Employee.class, id);</span>
+<span class="fc" id="L146">        emp.setFired(true);</span>
+
+<span class="fc" id="L148">        EmployeePostHistory emp_post_history = entityManager.find(EmployeePostHistory.class, new EmployeePostHistoryPK(emp.getId(), emp.getPostId()));</span>
+<span class="fc" id="L149">        emp_post_history.setEndDate(LocalDate.now());</span>
+<span class="fc" id="L150">    }</span>
+
+    @Transactional
+    @Override
+    public void updatePost(UUID employee_id, UUID post_id) {
+<span class="fc" id="L155">        Employee emp = findById(employee_id);</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">        if (emp.getPostId().equals(post_id)) {</span>
+<span class="fc" id="L157">           return;</span>
+        }
+
+<span class="fc" id="L160">        EmployeePostHistory eph = entityManager.find(EmployeePostHistory.class,</span>
+<span class="fc" id="L161">                new EmployeePostHistoryPK(employee_id, emp.getPostId()));</span>
+
+<span class="fc" id="L163">        Post post = entityManager.find(Post.class, post_id);</span>
+<span class="fc" id="L164">        emp.setPostId(post);</span>
+
+<span class="fc" id="L166">        eph.setEndDate(LocalDate.now());</span>
+
+<span class="fc" id="L168">        eph = new EmployeePostHistory();</span>
+<span class="fc" id="L169">        eph.setStartDate(LocalDate.now());</span>
+<span class="fc" id="L170">        eph.setEndDate(null);</span>
+<span class="fc" id="L171">        eph.setId(emp, post);</span>
+<span class="fc" id="L172">        entityManager.persist(eph);</span>
+<span class="fc" id="L173">    }</span>
+
+    @Transactional
+    @Override
+    public EmployeePostHistory findEmployeePostHistoryById(EmployeePostHistoryPK id) {
+<span class="fc" id="L178">        return entityManager.find(EmployeePostHistory.class, id);</span>
+    }
+
+    @Transactional
+    @Override
+    public List&lt;EmployeePostHistory&gt; findAllEmployeePostHistory(UUID employee_id) {
+<span class="fc" id="L184">        CriteriaQuery&lt;EmployeePostHistory&gt; query = cb.createQuery(EmployeePostHistory.class);</span>
+<span class="fc" id="L185">        Root&lt;EmployeePostHistory&gt; root = query.from(EmployeePostHistory.class);</span>
+
+<span class="fc" id="L187">        query.select(root).where(cb.equal(root.get(&quot;employee_id&quot;).get(&quot;employee_id&quot;), employee_id));</span>
+<span class="fc" id="L188">        return entityManager.createQuery(query).getResultList();</span>
+    }
+
+    @Transactional
+    @Override
+    public List&lt;EmployeeRoleHistory&gt; findAllEmployeeRoleHistory(UUID employee_id) {
+<span class="fc" id="L194">        CriteriaQuery&lt;EmployeeRoleHistory&gt; query = cb.createQuery(EmployeeRoleHistory.class);</span>
+<span class="fc" id="L195">        Root&lt;EmployeeRoleHistory&gt; root = query.from(EmployeeRoleHistory.class);</span>
+
+<span class="fc" id="L197">        query.select(root).where(cb.equal(root.get(&quot;employee_id&quot;).get(&quot;employee_id&quot;), employee_id));</span>
+<span class="fc" id="L198">        return entityManager.createQuery(query).getResultList();</span>
+    }
+
+    @Transactional
+    @Override
+    public List&lt;Payout&gt; findAllEmployeeBonus(UUID employee_id) {
+<span class="fc" id="L204">        CriteriaQuery&lt;Payout&gt; query = cb.createQuery(Payout.class);</span>
+<span class="fc" id="L205">        Root&lt;Payout&gt; root = query.from(Payout.class);</span>
+<span class="fc" id="L206">        List&lt;Predicate&gt; predicates = new ArrayList&lt;&gt;();</span>
+
+<span class="fc" id="L208">        predicates.add(cb.equal(root.get(&quot;employee_id&quot;).get(&quot;employee_id&quot;), employee_id));</span>
+<span class="fc" id="L209">        predicates.add(cb.equal(root.get(&quot;payout_type_id&quot;).get(&quot;payout_type&quot;), &quot;Bonus&quot;));</span>
+<span class="fc" id="L210">        query.select(root).where(cb.and(predicates.toArray(new Predicate[0])) );</span>
+<span class="fc" id="L211">        return entityManager.createQuery(query).getResultList();</span>
+    }
+
+    @Transactional
+    @Override
+    public List&lt;Payout&gt; findAllPayouts(UUID employee_id) {
+<span class="fc" id="L217">        CriteriaQuery&lt;Payout&gt; query = cb.createQuery(Payout.class);</span>
+<span class="fc" id="L218">        Root&lt;Payout&gt; root = query.from(Payout.class);</span>
+
+<span class="fc" id="L220">        query.select(root).where(cb.equal(root.get(&quot;employee_id&quot;).get(&quot;employee_id&quot;), employee_id));</span>
+<span class="fc" id="L221">        return entityManager.createQuery(query).getResultList();</span>
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

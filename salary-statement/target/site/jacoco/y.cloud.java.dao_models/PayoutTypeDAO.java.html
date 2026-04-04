@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PayoutTypeDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">salary-statement</a> &gt; <a href="index.source.html" class="el_package">y.cloud.java.dao_models</a> &gt; <span class="el_source">PayoutTypeDAO.java</span></div><h1>PayoutTypeDAO.java</h1><pre class="source lang-java linenums">package y.cloud.java.dao_models;
+
+import y.cloud.java.dto_models.PayoutTypeRequest;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+import y.cloud.java.salary_statement_models.PayoutType;
+
+import java.util.List;
+import java.util.UUID;
+
+@Repository
+<span class="fc" id="L14">public class PayoutTypeDAO implements PayoutTypeInterfaceDAO{</span>
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    public PayoutType findById(UUID id) {
+<span class="fc" id="L19">        return entityManager.find(PayoutType.class, id);</span>
+    }
+
+    public List&lt;PayoutType&gt; findAll() {
+<span class="fc" id="L23">        return entityManager</span>
+<span class="fc" id="L24">                .createQuery(&quot;SELECT p FROM PayoutType p&quot;, PayoutType.class)</span>
+<span class="fc" id="L25">                .getResultList();</span>
+    }
+
+    @Transactional
+    @Override
+    public UUID insert(PayoutTypeRequest req) {
+<span class="fc" id="L31">        PayoutType entity = new PayoutType(req);</span>
+
+<span class="fc" id="L33">        entityManager.persist(entity);</span>
+
+<span class="fc" id="L35">        return entity.getId();</span>
+    }
+
+    @Transactional
+    @Override
+    public PayoutType update(PayoutTypeRequest req) {
+<span class="fc" id="L41">        PayoutType entity = entityManager.find(PayoutType.class, req.getPayoutTypeId());</span>
+
+<span class="fc" id="L43">        entity.setPayoutType(req.getPayoutType());</span>
+
+<span class="fc" id="L45">        return entity;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -44,18 +44,14 @@ public class ProjectSetupDAO implements ProjectSetupInterfaceDAO {
 
     @Transactional
     @Override
-    public void update(ProjectSetupRequest project_setup_req) {
+    public ProjectSetup update(ProjectSetupRequest project_setup_req) {
         ProjectSetup project_setup = entityManager.find(ProjectSetup.class, new ProjectSetupPK(project_setup_req.getEmployeeId(),
                                                                                                project_setup_req.getProjectId()));
 
         Role role_id = entityManager.find(Role.class, project_setup_req.getRoleId());
         project_setup.setRoleId(role_id);
+
+        return project_setup;
     }
 
-    @Transactional
-    @Override
-    public void delete(ProjectSetupPK id) {
-        ProjectSetup project_setup = entityManager.find(ProjectSetup.class, id);
-        entityManager.remove(project_setup);
-    }
 }

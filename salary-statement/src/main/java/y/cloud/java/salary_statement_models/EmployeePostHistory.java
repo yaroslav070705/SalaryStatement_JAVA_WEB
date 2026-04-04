@@ -1,14 +1,23 @@
 package y.cloud.java.salary_statement_models;
 
-import java.time.LocalDate;
-import java.util.UUID;
+import y.cloud.java.dto_models.EmployeePostHistoryRequest;
 
+import java.time.LocalDate;
 
 public class EmployeePostHistory {
     private Employee employee_id;
     private Post post_id;
+
     private LocalDate start_date;
     private LocalDate end_date;
+
+    public EmployeePostHistory() {
+    }
+
+    public EmployeePostHistory(EmployeePostHistoryRequest req) {
+        this.start_date = req.getStartDate();
+        this.end_date = req.getEndDate();
+    }
 
     public EmployeePostHistoryPK getId() {
         return new EmployeePostHistoryPK(employee_id.getId(), post_id.getId());

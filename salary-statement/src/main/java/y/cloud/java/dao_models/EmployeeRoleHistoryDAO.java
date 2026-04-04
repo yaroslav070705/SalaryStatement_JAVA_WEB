@@ -44,7 +44,7 @@ public class EmployeeRoleHistoryDAO implements EmployeeRoleHistoryInterfaceDAO {
 
     @Transactional
     @Override
-    public void update(EmployeeRoleHistoryRequest req) {
+    public EmployeeRoleHistory update(EmployeeRoleHistoryRequest req) {
         EmployeeRoleHistory entity = entityManager.find(EmployeeRoleHistory.class,
                                                         new EmployeeRoleHistoryPK(req.getEmployeeId(),
                                                                                   req.getProjectId(),
@@ -52,10 +52,8 @@ public class EmployeeRoleHistoryDAO implements EmployeeRoleHistoryInterfaceDAO {
 
         entity.setStartDate(req.getStartDate());
         entity.setEndDate(req.getEndDate());
+
+        return entity;
     }
 
-    @Transactional
-    @Override
-    public void delete(EmployeeRoleHistoryPK pk) {
-    }
 }

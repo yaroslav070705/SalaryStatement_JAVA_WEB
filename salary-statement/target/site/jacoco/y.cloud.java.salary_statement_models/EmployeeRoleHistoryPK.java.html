@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmployeeRoleHistoryPK.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">salary-statement</a> &gt; <a href="index.source.html" class="el_package">y.cloud.java.salary_statement_models</a> &gt; <span class="el_source">EmployeeRoleHistoryPK.java</span></div><h1>EmployeeRoleHistoryPK.java</h1><pre class="source lang-java linenums">package y.cloud.java.salary_statement_models;
+
+import java.util.UUID;
+import java.io.Serializable;
+
+
+public class EmployeeRoleHistoryPK implements Serializable {
+    private UUID employee_id;
+    private UUID project_id;
+    private UUID role_id;
+
+<span class="fc" id="L12">    public EmployeeRoleHistoryPK(){}</span>
+<span class="fc" id="L13">    public EmployeeRoleHistoryPK(UUID employee_id, UUID project_id, UUID role_id) {</span>
+<span class="fc" id="L14">        this.employee_id = employee_id;</span>
+<span class="fc" id="L15">        this.project_id = project_id;</span>
+<span class="fc" id="L16">        this.role_id = role_id;</span>
+<span class="fc" id="L17">    }</span>
+
+    public boolean equals(Object obj) {
+<span class="nc bnc" id="L20" title="All 2 branches missed.">        if (obj instanceof EmployeeRoleHistoryPK er_obj){</span>
+<span class="nc bnc" id="L21" title="All 2 branches missed.">            if (this == obj) {</span>
+<span class="nc" id="L22">                return true;</span>
+            }
+
+<span class="nc bnc" id="L25" title="All 6 branches missed.">            return er_obj.employee_id == employee_id &amp;&amp;</span>
+                    er_obj.project_id == project_id &amp;&amp;
+                    er_obj.role_id == role_id;
+        }
+
+<span class="nc" id="L30">        return false;</span>
+    }
+
+    public int hashCode() {
+<span class="nc" id="L34">        return employee_id.hashCode() + project_id.hashCode() + role_id.hashCode();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

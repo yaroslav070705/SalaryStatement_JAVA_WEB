@@ -37,14 +37,12 @@ public class PayoutTypeDAO implements PayoutTypeInterfaceDAO{
 
     @Transactional
     @Override
-    public void update(PayoutTypeRequest req) {
+    public PayoutType update(PayoutTypeRequest req) {
         PayoutType entity = entityManager.find(PayoutType.class, req.getPayoutTypeId());
 
         entity.setPayoutType(req.getPayoutType());
+
+        return entity;
     }
 
-    @Transactional
-    @Override
-    public void delete(UUID id) {
-    }
 }

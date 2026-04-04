@@ -44,16 +44,12 @@ public class PayoutDAO implements PayoutInterfaceDAO {
 
     @Transactional
     @Override
-    public void update(PayoutRequest payout_req) {
+    public Payout update(PayoutRequest payout_req) {
         Payout payout = entityManager.find(Payout.class, new PayoutPK(payout_req.getEmployeeId(), payout_req.getPayoutTypeId()));
         payout.setDate(payout_req.getDate());
         payout.setValue(payout_req.getValue());
+
+        return payout;
     }
 
-    @Transactional
-    @Override
-    public void delete(PayoutPK id) {
-        Payout p = entityManager.find(Payout.class, id);
-        entityManager.remove(p);
-    }
 }

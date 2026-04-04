@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RolePayoutValueDAO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">salary-statement</a> &gt; <a href="index.source.html" class="el_package">y.cloud.java.dao_models</a> &gt; <span class="el_source">RolePayoutValueDAO.java</span></div><h1>RolePayoutValueDAO.java</h1><pre class="source lang-java linenums">package y.cloud.java.dao_models;
+
+import y.cloud.java.dto_models.RolePayoutValueRequest;
+
+import org.springframework.stereotype.Repository;
+import y.cloud.java.salary_statement_models.Project;
+import y.cloud.java.salary_statement_models.Role;
+import y.cloud.java.salary_statement_models.RolePayoutValue;
+import y.cloud.java.salary_statement_models.RolePayoutValuePK;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Repository
+<span class="fc" id="L18">public class RolePayoutValueDAO implements RolePayoutValueInterfaceDAO {</span>
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Override
+    public RolePayoutValue findById(RolePayoutValuePK id) {
+<span class="fc" id="L25">        return entityManager.find(RolePayoutValue.class, id);</span>
+    }
+
+    @Transactional
+    @Override
+    public List&lt;RolePayoutValue&gt; findAll() {
+<span class="fc" id="L31">        return entityManager.createQuery(&quot;SELECT rpv FROM RolePayoutValue rpv&quot;, RolePayoutValue.class).getResultList();</span>
+    }
+
+    @Transactional
+    @Override
+    public RolePayoutValuePK insert(RolePayoutValueRequest req) {
+<span class="fc" id="L37">        RolePayoutValue entity = new RolePayoutValue(req);</span>
+
+<span class="fc" id="L39">        Project project = entityManager.find(Project.class, req.getProjectId());</span>
+<span class="fc" id="L40">        Role role = entityManager.find(Role.class, req.getRoleId());</span>
+
+<span class="fc" id="L42">        entity.setId(project, role);</span>
+
+<span class="fc" id="L44">        entityManager.persist(entity);</span>
+
+<span class="fc" id="L46">        return entity.getId();</span>
+    }
+
+    @Transactional
+    @Override
+    public RolePayoutValue update(RolePayoutValueRequest req) {
+<span class="fc" id="L52">        RolePayoutValue entity = findById(new RolePayoutValuePK(req.getProjectId(), req.getRoleId()));</span>
+
+<span class="fc" id="L54">        entity.setValue(req.getValue());</span>
+
+<span class="fc" id="L56">        return entity;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,13 +1,11 @@
 package y.cloud.java.dao_models;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import y.cloud.java.salary_statement_models.Employee;
-import y.cloud.java.salary_statement_models.EmployeePostHistory;
-import y.cloud.java.salary_statement_models.EmployeePostHistoryPK;
-import y.cloud.java.salary_statement_models.Post;
+import y.cloud.java.salary_statement_models.*;
 
 import y.cloud.java.dto_models.EmployeeRequest;
 import y.cloud.java.models_utils.NotStated;
@@ -28,7 +26,12 @@ public class EmployeeDAO implements EmployeeInterfaceDAO{
     @PersistenceContext
     private EntityManager entityManager;
 
-    private final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+    private CriteriaBuilder cb;
+
+    @PostConstruct
+    public void init() {
+        cb = entityManager.getCriteriaBuilder();
+    }
 
     @Override
     public Employee findById(UUID id) {
@@ -50,17 +53,17 @@ public class EmployeeDAO implements EmployeeInterfaceDAO{
         if(!req.getMiddleName().isEmpty()) {
             predicates.add(cb.equal(root.get("middle_name"), req.getMiddleName()));
         }
-        if(req.getBirthDate() != NotStated.REL.value()) {
+        if(!req.getBirthDate().equals(NotStated.REL.value())) {
             predicates.add(cb.equal(root.get("birth_date"), req.getBirthDate()));
         }
         if(req.getWorkExperience() != (int)NotStated.PRIMITIVE.value()) {
             predicates.add(cb.equal(root.get("work_experience"), req.getWorkExperience()));
         }
-        if(req.getPostId() != (UUID)NotStated.ID.value()) {
-            predicates.add(cb.equal(root.get("post_id"), req.getPostId()));
+        if(!req.getPostId().equals((UUID)NotStated.ID.value())) {
+            predicates.add(cb.equal(root.get("post_id").get("post_id"), req.getPostId()));
         }
 
-        predicates.add(cb.equal(root.get("fired"), req.getPostId()));
+        predicates.add(cb.equal(root.get("fired"), req.getFired()));
 
         query.select(root).where(cb.and(predicates.toArray(new Predicate[0])));
 
@@ -85,39 +88,39 @@ public class EmployeeDAO implements EmployeeInterfaceDAO{
                 .getResultList();
     }
 
+    @Override
+    public List<Employee> findAllEmployeeByProject(UUID project_id) {
+        return entityManager
+                .createQuery(
+                        "SELECT ps.employee_id FROM ProjectSetup ps " +
+                                "WHERE ps.project_id.project_id = :project_id",
+                        Employee.class
+                )
+                .setParameter("project_id", project_id)
+                .getResultList();
+    }
+
     @Transactional
     @Override
     public UUID insert(EmployeeRequest emp_req) {
         Employee emp = new Employee(emp_req);
         emp.setPostId(entityManager.find(Post.class, emp_req.getPostId()));
-
-        try {
-            entityManager.persist(emp);
-        } catch (Exception e) {
-            emp.setId(null);
-        }
+        entityManager.persist(emp);
 
         EmployeePostHistory eph = new EmployeePostHistory();
-        Post post = null;
-        try {
-            post = entityManager.find(Post.class, emp.getPostId());
-        } catch(Exception e) {
-            System.out.print("No post with id");
-        }
+        Post post = entityManager.find(Post.class, emp.getPostId());
 
         eph.setId(emp, post);
         eph.setStartDate(LocalDate.now());
         eph.setEndDate(null);
-
         entityManager.persist(eph);
-
 
         return emp.getId();
     }
 
     @Transactional
     @Override
-    public void update(EmployeeRequest emp_req) {
+    public Employee update(EmployeeRequest emp_req) {
         Employee cur_emp = entityManager.find(Employee.class, emp_req.getEmployeeId());
         if(emp_req.getPostId() != cur_emp.getPostId()) {
             UUID prev_post_id = entityManager.find(Employee.class, emp_req.getEmployeeId()).getPostId();
@@ -131,14 +134,9 @@ public class EmployeeDAO implements EmployeeInterfaceDAO{
         cur_emp.setSurname(emp_req.getSurname());
         cur_emp.setMiddleName(emp_req.getMiddleName());
         cur_emp.setBirtDate(emp_req.getBirthDate());
-        cur_emp.setPostId(entityManager.find(Post.class, emp_req.getPostId()));
         cur_emp.setWorkExperience(emp_req.getWorkExperience());
-        cur_emp.setFired(emp_req.getFired());
-    }
 
-    @Transactional
-    @Override
-    public void delete(UUID id) {
+        return cur_emp;
     }
 
     @Transactional
@@ -150,4 +148,78 @@ public class EmployeeDAO implements EmployeeInterfaceDAO{
         EmployeePostHistory emp_post_history = entityManager.find(EmployeePostHistory.class, new EmployeePostHistoryPK(emp.getId(), emp.getPostId()));
         emp_post_history.setEndDate(LocalDate.now());
     }
+
+    @Transactional
+    @Override
+    public void updatePost(UUID employee_id, UUID post_id) {
+        Employee emp = findById(employee_id);
+        if (emp.getPostId().equals(post_id)) {
+           return;
+        }
+
+        EmployeePostHistory eph = entityManager.find(EmployeePostHistory.class,
+                new EmployeePostHistoryPK(employee_id, emp.getPostId()));
+
+        Post post = entityManager.find(Post.class, post_id);
+        emp.setPostId(post);
+
+        eph.setEndDate(LocalDate.now());
+
+        eph = new EmployeePostHistory();
+        eph.setStartDate(LocalDate.now());
+        eph.setEndDate(null);
+        eph.setId(emp, post);
+        entityManager.persist(eph);
+    }
+
+    @Transactional
+    @Override
+    public EmployeePostHistory findEmployeePostHistoryById(EmployeePostHistoryPK id) {
+        return entityManager.find(EmployeePostHistory.class, id);
+    }
+
+    @Transactional
+    @Override
+    public List<EmployeePostHistory> findAllEmployeePostHistory(UUID employee_id) {
+        CriteriaQuery<EmployeePostHistory> query = cb.createQuery(EmployeePostHistory.class);
+        Root<EmployeePostHistory> root = query.from(EmployeePostHistory.class);
+
+        query.select(root).where(cb.equal(root.get("employee_id").get("employee_id"), employee_id));
+        return entityManager.createQuery(query).getResultList();
+    }
+
+    @Transactional
+    @Override
+    public List<EmployeeRoleHistory> findAllEmployeeRoleHistory(UUID employee_id) {
+        CriteriaQuery<EmployeeRoleHistory> query = cb.createQuery(EmployeeRoleHistory.class);
+        Root<EmployeeRoleHistory> root = query.from(EmployeeRoleHistory.class);
+
+        query.select(root).where(cb.equal(root.get("employee_id").get("employee_id"), employee_id));
+        return entityManager.createQuery(query).getResultList();
+    }
+
+    @Transactional
+    @Override
+    public List<Payout> findAllEmployeeBonus(UUID employee_id) {
+        CriteriaQuery<Payout> query = cb.createQuery(Payout.class);
+        Root<Payout> root = query.from(Payout.class);
+        List<Predicate> predicates = new ArrayList<>();
+
+        predicates.add(cb.equal(root.get("employee_id").get("employee_id"), employee_id));
+        predicates.add(cb.equal(root.get("payout_type_id").get("payout_type"), "Bonus"));
+        query.select(root).where(cb.and(predicates.toArray(new Predicate[0])) );
+        return entityManager.createQuery(query).getResultList();
+    }
+
+    @Transactional
+    @Override
+    public List<Payout> findAllPayouts(UUID employee_id) {
+        CriteriaQuery<Payout> query = cb.createQuery(Payout.class);
+        Root<Payout> root = query.from(Payout.class);
+
+        query.select(root).where(cb.equal(root.get("employee_id").get("employee_id"), employee_id));
+        return entityManager.createQuery(query).getResultList();
+    }
+
+
 }

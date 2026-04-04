@@ -1,0 +1,15 @@
+/home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/test/java/tests/DaoTestSupport.java
+/home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/test/java/tests/EmployeeDAOTest.java
+/home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/test/java/tests/EmployeePostHistoryDAOTest.java
+/home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/test/java/tests/EmployeeRoleHistoryDAOTest.java
+/home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/test/java/tests/EmployeeRoleHistoryTest.java
+/home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/test/java/tests/EmployeeTest.java
+/home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/test/java/tests/PayoutDAOTest.java
+/home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/test/java/tests/PayoutTypeDAOTest.java
+/home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/test/java/tests/PostDAOTest.java
+/home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/test/java/tests/ProjectDAOTest.java
+/home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/test/java/tests/ProjectSetupDAOTest.java
+/home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/test/java/tests/RoleDAOTest.java
+/home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/test/java/tests/RolePayoutValueDAOTest.java
+/home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/test/java/tests/WorkExperiencePayoutValueDAOTest.java
+/home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/test/java/y/cloud/java/AppTest.java

@@ -39,9 +39,10 @@ public class RoleDAO implements RoleInterfaceDAO{
 
     @Transactional
     @Override
-    public void update(RoleRequest role_req) {
+    public Role update(RoleRequest role_req) {
         Role role = entityManager.find(Role.class, role_req.getRoleId());
 
         role.setRoleName(role_req.getRoleName());
+        return role;
     }
 }

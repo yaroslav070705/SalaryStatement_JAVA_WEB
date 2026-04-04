@@ -48,14 +48,12 @@ public class RolePayoutValueDAO implements RolePayoutValueInterfaceDAO {
 
     @Transactional
     @Override
-    public void update(RolePayoutValueRequest req) {
+    public RolePayoutValue update(RolePayoutValueRequest req) {
         RolePayoutValue entity = findById(new RolePayoutValuePK(req.getProjectId(), req.getRoleId()));
 
         entity.setValue(req.getValue());
+
+        return entity;
     }
 
-    @Transactional
-    @Override
-    public void delete(RolePayoutValuePK id) {
-    }
 }

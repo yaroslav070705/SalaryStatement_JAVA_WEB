@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Project.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">salary-statement</a> &gt; <a href="index.source.html" class="el_package">y.cloud.java.salary_statement_models</a> &gt; <span class="el_source">Project.java</span></div><h1>Project.java</h1><pre class="source lang-java linenums">package y.cloud.java.salary_statement_models;
+
+import y.cloud.java.dto_models.ProjectRequest;
+
+import java.time.LocalDate;
+import java.util.UUID;
+
+
+public class Project {
+    private UUID project_id;
+    private String project_name;
+    private LocalDate start_date;
+    private LocalDate end_date;
+
+<span class="fc" id="L15">    public Project() {}</span>
+<span class="fc" id="L16">    public Project(ProjectRequest project_req){</span>
+<span class="fc" id="L17">        project_name = project_req.getProjectName();</span>
+<span class="fc" id="L18">        start_date = project_req.getStartDate();</span>
+<span class="fc" id="L19">        end_date = project_req.getEndDate();</span>
+<span class="fc" id="L20">    }</span>
+
+    public UUID getId() {
+<span class="fc" id="L23">        return project_id;</span>
+    }
+
+    public void setId(UUID project_id) {
+<span class="nc" id="L27">        this.project_id = project_id;</span>
+<span class="nc" id="L28">    }</span>
+
+    public String getProjectName() {
+<span class="fc" id="L31">        return project_name;</span>
+    }
+
+    public void setProjectName(String project_name) {
+<span class="fc" id="L35">        this.project_name = project_name;</span>
+<span class="fc" id="L36">    }</span>
+
+    public LocalDate getStartDate() {
+<span class="nc" id="L39">        return start_date;</span>
+    }
+
+    public void setStartDate(LocalDate start_date) {
+<span class="fc" id="L43">        this.start_date = start_date;</span>
+<span class="fc" id="L44">    }</span>
+
+    public LocalDate getEndDate() {
+<span class="nc" id="L47">        return end_date;</span>
+    }
+
+    public void setEndDate(LocalDate end_date) {
+<span class="fc" id="L51">        this.end_date = end_date;</span>
+<span class="fc" id="L52">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,5 +1,6 @@
 package y.cloud.java.dao_models;
 
+import jakarta.annotation.PostConstruct;
 import y.cloud.java.dto_models.PostRequest;
 import y.cloud.java.salary_statement_models.Post;
 
@@ -19,18 +20,23 @@ public class PostDAO implements PostInterfaceDAO{
     @PersistenceContext
     private EntityManager entityManager;
 
-    private CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+    private CriteriaBuilder cb;
+
+    @PostConstruct
+    public void init() {
+        cb = entityManager.getCriteriaBuilder();
+    }
 
     @Override
     public Post findById(UUID id) {
         return entityManager.find(Post.class, id);
     }
 
-    public Post findByName(String name) {
+    public Post findByName(String post_name) {
         CriteriaQuery<Post> query = cb.createQuery(Post.class);
         Root<Post> root = query.from(Post.class);
 
-        query.select(root).where(cb.equal(root.get("name"), name));
+        query.select(root).where(cb.equal(root.get("post_name"), post_name));
 
         return entityManager.createQuery(query).getSingleResult();
     }
@@ -54,15 +60,13 @@ public class PostDAO implements PostInterfaceDAO{
 
     @Transactional
     @Override
-    public void update(PostRequest req) {
+    public Post update(PostRequest req) {
         Post post = entityManager.find(Post.class, req.getPostId());
 
         post.setPostName(req.getPostName());
         post.setPayoutValue(req.getPayoutValue());
+
+        return post;
     }
 
-    @Transactional
-    @Override
-    public void delete(UUID id) {
-    }
 }
