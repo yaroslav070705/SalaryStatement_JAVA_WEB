@@ -14,8 +14,12 @@ public class PayoutPK implements Serializable {
         this.payout_type_id = payout_type_id;
     }
 
+    public UUID getEmployeeId() { return employee_id; }
+    public UUID getPayoutTypeId() { return payout_type_id; }
+
     public boolean equals(Object obj) {
-        if (obj instanceof PayoutPK p_obj){
+        if (obj instanceof PayoutPK){
+            PayoutPK p_obj = (PayoutPK) obj;
             if (this == obj) {
                 return true;
             }

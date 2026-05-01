@@ -1,5 +1,6 @@
 package y.cloud.java.dto_models;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -8,6 +9,14 @@ public class PayoutRequest {
     private UUID payout_type_id;
     private LocalDate date;
     private Double value;
+
+    public PayoutRequest() {}
+    public PayoutRequest(UUID employee_id, UUID payout_type_id, LocalDate date, Double value) {
+        this.employee_id = employee_id;
+        this.payout_type_id = payout_type_id;
+        this.date = date;
+        this.value = value;
+    }
 
     public UUID getEmployeeId() {
         return employee_id;

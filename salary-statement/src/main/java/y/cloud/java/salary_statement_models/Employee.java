@@ -76,7 +76,7 @@ public class Employee {
     }
 
     public UUID getPostId() {
-        return post_id.getId();
+        return post_id != null ? post_id.getId() : null;
     }
 
     public void setPostId(Post post_id) {

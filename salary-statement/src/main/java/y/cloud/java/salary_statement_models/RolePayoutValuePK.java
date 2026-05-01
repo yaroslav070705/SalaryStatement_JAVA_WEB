@@ -15,7 +15,8 @@ public class RolePayoutValuePK implements Serializable {
     }
 
     public boolean equals(Object obj) {
-        if (obj instanceof RolePayoutValuePK rp_obj){
+        if (obj instanceof RolePayoutValuePK){
+            RolePayoutValuePK rp_obj = (RolePayoutValuePK) obj;
             if (this == obj) {
                 return true;
             }

@@ -9,6 +9,14 @@ public class ProjectRequest {
     private LocalDate start_date;
     private LocalDate end_date;
 
+    public ProjectRequest() {}
+    public ProjectRequest(UUID project_id, String project_name, LocalDate start_date, LocalDate end_date) {
+        this.project_id = project_id;
+        this.project_name = project_name;
+        this.start_date = start_date;
+        this.end_date = end_date;
+    }
+
     public UUID getProjectId() {
         return project_id;
     }

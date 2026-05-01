@@ -9,6 +9,14 @@ public class EmployeePostHistoryRequest {
     private LocalDate start_date;
     private LocalDate end_date;
 
+    public EmployeePostHistoryRequest() {}
+    public EmployeePostHistoryRequest(UUID employee_id, UUID post_id, LocalDate start_date, LocalDate end_date) {
+        this.employee_id = employee_id;
+        this.post_id = post_id;
+        this.start_date = start_date;
+        this.end_date = end_date;
+    }
+
     public UUID getEmployeeId() {
         return employee_id;
     }

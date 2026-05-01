@@ -6,4 +6,5 @@ import y.cloud.java.salary_statement_models.Post;
 import java.util.UUID;
 
 public interface PostInterfaceDAO extends BaseInterfaceDAO<Post, PostRequest, UUID> {
+    public String getPostName(UUID id);
 }

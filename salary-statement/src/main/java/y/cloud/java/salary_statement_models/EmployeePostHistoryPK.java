@@ -14,8 +14,12 @@ public class EmployeePostHistoryPK implements Serializable {
         this.employee_id = employee_id;
     }
 
+    public UUID getEmployeeId() { return employee_id; }
+    public UUID getPostId() { return post_id; }
+
     public boolean equals(Object obj) {
-        if (obj instanceof EmployeePostHistoryPK ep_obj){
+        if (obj instanceof EmployeePostHistoryPK){
+            EmployeePostHistoryPK ep_obj = (EmployeePostHistoryPK)obj;
             if (this == obj) {
                 return true;
             }

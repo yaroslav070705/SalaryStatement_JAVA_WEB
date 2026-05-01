@@ -79,7 +79,7 @@ public class EmployeeDAOTest extends DaoTestSupport {
         req.setFired(false);
         req.setPostId(post_id);
         employee_dao.insert(req);
-
+        System.out.printf("////Size %d\n", employee_dao.findAll().size());
         assert !employee_dao.findAll().isEmpty();
     }
 }

@@ -19,9 +19,7 @@ public class EmployeeRequest {
     public UUID getEmployeeId() {
         return employee_id;
     }
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
     public String getSurname() {
         return surname;
     }

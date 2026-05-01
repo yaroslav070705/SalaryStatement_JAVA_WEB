@@ -4,13 +4,18 @@ import y.cloud.java.dto_models.PayoutRequest;
 
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Repository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import y.cloud.java.salary_statement_models.Employee;
-import y.cloud.java.salary_statement_models.Payout;
-import y.cloud.java.salary_statement_models.PayoutPK;
-import y.cloud.java.salary_statement_models.PayoutType;
 
+import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
+import y.cloud.java.salary_statement_models.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -19,14 +24,41 @@ public class PayoutDAO implements PayoutInterfaceDAO {
     @PersistenceContext
     private EntityManager entityManager;
 
+    CriteriaBuilder cb;
+
+    @PostConstruct
+    public void init() {
+        cb = entityManager.getCriteriaBuilder();
+    }
+
+    @Override
     public Payout findById(PayoutPK id) {
         return entityManager.find(Payout.class, id);
     }
 
+    @Override
     public List<Payout> findAll() {
         return entityManager
                 .createQuery("SELECT p FROM Payout p", Payout.class)
                 .getResultList();
+    }
+
+    @Override
+    public List<Payout> findByParams(PayoutRequest req) {
+        CriteriaQuery<Payout> query = cb.createQuery(Payout.class);
+        Root<Payout> root = query.from(Payout.class);
+        List<Predicate> predicates = new ArrayList<>();
+
+        if(req.getPayoutTypeId() != null) {
+            predicates.add(cb.equal(root.get("payout_type_id").get("payout_type_id"), req.getPayoutTypeId()));
+        }
+        if(req.getEmployeeId() != null) {
+            predicates.add(cb.equal(root.get("employee_id").get("employee_id"), req.getEmployeeId()));
+        }
+
+        query.select(root).where(cb.and(predicates.toArray(new Predicate[0])));
+
+        return entityManager.createQuery(query).getResultList();
     }
 
     @Transactional

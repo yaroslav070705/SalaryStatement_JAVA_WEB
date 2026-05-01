@@ -16,8 +16,13 @@ public class EmployeeRoleHistoryPK implements Serializable {
         this.role_id = role_id;
     }
 
+    public UUID getEmployeeId() {return employee_id; }
+    public UUID getProjectId() {return project_id; }
+    public UUID getRoleId() {return role_id; }
+
     public boolean equals(Object obj) {
-        if (obj instanceof EmployeeRoleHistoryPK er_obj){
+        if (obj instanceof EmployeeRoleHistoryPK){
+            EmployeeRoleHistoryPK er_obj = (EmployeeRoleHistoryPK) obj;
             if (this == obj) {
                 return true;
             }

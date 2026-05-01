@@ -8,8 +8,8 @@ import y.cloud.java.salary_statement_models.Role;
 import y.cloud.java.salary_statement_models.RolePayoutValue;
 import y.cloud.java.salary_statement_models.RolePayoutValuePK;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;

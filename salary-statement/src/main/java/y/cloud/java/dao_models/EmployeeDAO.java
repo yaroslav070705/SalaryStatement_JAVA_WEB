@@ -1,17 +1,19 @@
 package y.cloud.java.dao_models;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import javax.annotation.PostConstruct;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
+import y.cloud.java.App;
 import y.cloud.java.salary_statement_models.*;
 
 import y.cloud.java.dto_models.EmployeeRequest;
 import y.cloud.java.models_utils.NotStated;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.time.LocalDate;
-
+import java.util.logging.Logger;
 @Repository
 public class EmployeeDAO implements EmployeeInterfaceDAO{
 
@@ -27,6 +29,7 @@ public class EmployeeDAO implements EmployeeInterfaceDAO{
     private EntityManager entityManager;
 
     private CriteriaBuilder cb;
+    private static final Logger log = Logger.getLogger(EmployeeDAO.class.getName());
 
     @PostConstruct
     public void init() {
