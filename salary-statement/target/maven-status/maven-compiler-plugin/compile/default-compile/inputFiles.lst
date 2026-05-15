@@ -14,6 +14,7 @@
 /home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/main/java/y/cloud/java/dao_models/BaseInterfaceDAO.java
 /home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/main/java/y/cloud/java/dto_models/ProjectResponse.java
 /home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/main/java/y/cloud/java/salary_statement_models/RolePayoutValue.java
+/home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/main/java/y/cloud/java/salary_statement_models/BonusPayoutValue.java
 /home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/main/java/y/cloud/java/dao_models/EmployeePostHistoryInterfaceDAO.java
 /home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/main/java/y/cloud/java/dto_models/PayoutRequest.java
 /home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/main/java/y/cloud/java/salary_statement_models/RolePayoutValuePK.java
@@ -22,11 +23,13 @@
 /home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/main/java/y/cloud/java/salary_statement_models/EmployeeRoleHistoryPK.java
 /home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/main/java/y/cloud/java/dto_models/EmployeeRoleHistoryRequest.java
 /home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/main/java/y/cloud/java/dto_models/PostResponse.java
+/home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/main/java/y/cloud/java/salary_statement_models/BonusPayoutValuePK.java
 /home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/main/java/y/cloud/java/dao_models/EmployeeDAO.java
 /home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/main/java/y/cloud/java/salary_statement_models/EmployeePostHistoryPK.java
 /home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/main/java/y/cloud/java/salary_statement_models/Post.java
 /home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/main/java/y/cloud/java/salary_statement_models/EmployeeRoleHistory.java
 /home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/main/java/y/cloud/java/dao_models/PostDAO.java
+/home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/main/java/y/cloud/java/dto_models/BonusPayoutValueRequest.java
 /home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/main/java/y/cloud/java/dao_models/WorkExperiencePayoutValueDAO.java
 /home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/main/java/y/cloud/java/dto_models/ProjectRequest.java
 /home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/main/java/y/cloud/java/dao_models/PayoutTypeInterfaceDAO.java
@@ -60,6 +63,7 @@
 /home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/main/java/y/cloud/java/controllers/HomeController.java
 /home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/main/java/y/cloud/java/salary_statement_models/WorkExperiencePayoutValue.java
 /home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/main/java/y/cloud/java/controllers/PayoutsController.java
+/home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/main/java/y/cloud/java/dto_models/BonusPayoutValueResponse.java
 /home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/main/java/y/cloud/java/dao_models/EmployeeRoleHistoryInterfaceDAO.java
 /home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/main/java/y/cloud/java/dao_models/EmployeeInterfaceDAO.java
 /home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/main/java/y/cloud/java/salary_statement_models/EmployeePostHistory.java

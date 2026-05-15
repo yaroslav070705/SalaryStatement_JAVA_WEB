@@ -1,5 +1,6 @@
 package y.cloud.java.dao_models;
 
+import y.cloud.java.dto_models.BonusPayoutValueRequest;
 import y.cloud.java.dto_models.PayoutRequest;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import y.cloud.java.salary_statement_models.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class PayoutDAO implements PayoutInterfaceDAO {
@@ -41,6 +43,31 @@ public class PayoutDAO implements PayoutInterfaceDAO {
         return entityManager
                 .createQuery("SELECT p FROM Payout p", Payout.class)
                 .getResultList();
+    }
+
+    @Override
+    public List<BonusPayoutValue> findAllBonusPayouts() {
+        return entityManager
+                .createQuery("SELECT bpv FROM BonusPayoutValue bpv", BonusPayoutValue.class)
+                .getResultList();
+    }
+
+    @Transactional
+    @Override
+    public UUID insertBonusPayout(BonusPayoutValueRequest req) {
+        BonusPayoutValue bonus_payout = new BonusPayoutValue(req);
+        entityManager.persist(bonus_payout);
+
+        return bonus_payout.getPayoutTypeId();
+    }
+
+    @Transactional
+    @Override
+    public BonusPayoutValue updateBonusPayout(BonusPayoutValueRequest req) {
+        BonusPayoutValue bonus_payout = entityManager.find(BonusPayoutValue.class, req.getPayoutTypeId());
+        bonus_payout.setValue(req.getValue());
+
+        return bonus_payout;
     }
 
     @Override

@@ -56,7 +56,7 @@ public static class ProjectInformationTestHelper
             .ToList();
     }
 
-    public static void SelectFirstAvailableRole(IWebDriver driver)
+    public static string SelectFirstAvailableRole(IWebDriver driver)
     {
         WaitUntil(driver, "загрузился список ролей", d => d.FindElements(By.CssSelector("#addWorkerRoleSelect option")).Count > 1);
 
@@ -71,6 +71,7 @@ public static class ProjectInformationTestHelper
         }
 
         SetInputValue(driver, "addWorkerRoleSelect", firstRoleOption.GetAttribute("value")!);
+        return firstRoleOption.Text;
     }
 
     public static void SetInputValue(IWebDriver driver, string elementId, string value)

@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import y.cloud.java.dao_models.EmployeeRoleHistoryDAO;
 import y.cloud.java.dao_models.ProjectDAO;
 import y.cloud.java.dao_models.ProjectSetupDAO;
 import y.cloud.java.dao_models.RoleDAO;
@@ -30,6 +31,9 @@ public class ProjectsController {
 
     @Autowired
     private RoleDAO role_dao;
+
+    @Autowired
+    private EmployeeRoleHistoryDAO role_history_dao;
 
     @GetMapping
     public List<ProjectResponse> getProjects(@RequestParam(required = false) String name,
@@ -107,6 +111,15 @@ public class ProjectsController {
 
         req.setProjectId(project_id);
         project_setup_dao.insert(req);
+
+        EmployeeRoleHistoryRequest history_req = new EmployeeRoleHistoryRequest(
+                req.getEmployeeId(),
+                project_id,
+                req.getRoleId(),
+                LocalDate.now(),
+                null
+        );
+        role_history_dao.insert(history_req);
     }
 
     @PostMapping

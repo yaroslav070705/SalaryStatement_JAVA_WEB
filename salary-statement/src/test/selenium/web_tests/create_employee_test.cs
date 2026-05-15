@@ -32,7 +32,7 @@ public static class AddEmployeeTest
         SetInputValue(driver, "createBirthDateInput", "1995-05-15");
         driver.FindElement(By.Id("createEducationInput")).SendKeys("Высшее");
 
-        SelectFirstAvailablePost(driver);
+        string postName = SelectFirstAvailablePost(driver);
 
         driver.FindElement(By.Id("submitCreateBtn")).Click();
 
@@ -53,7 +53,7 @@ public static class AddEmployeeTest
 
         AssertEmployeeAppearedInTable(driver, expectedFullName);
 
-        return new EmployeeTestData(name, surname, middleName);
+        return new EmployeeTestData(name, surname, middleName, postName);
     }
 
     private static void AssertEmployeeAppearedInTable(IWebDriver driver, string expectedFullName)
@@ -74,7 +74,7 @@ public static class AddEmployeeTest
         }
     }
 
-    private static void SelectFirstAvailablePost(IWebDriver driver)
+    private static string SelectFirstAvailablePost(IWebDriver driver)
     {
         WaitUntil(driver, "загрузился список должностей", d => d.FindElements(By.CssSelector("#createPostInput option")).Count > 1);
 
@@ -88,6 +88,7 @@ public static class AddEmployeeTest
         }
 
         SetSelectValue(driver, "createPostInput", firstPostOption.GetAttribute("value"));
+        return firstPostOption.Text;
     }
 
     private static void SetInputValue(IWebDriver driver, string elementId, string value)
@@ -139,7 +140,7 @@ public static class AddEmployeeTest
     }
 }
 
-public sealed record EmployeeTestData(string Name, string Surname, string MiddleName)
+public sealed record EmployeeTestData(string Name, string Surname, string MiddleName, string PostName)
 {
     public string FullName => Surname + " " + Name + " " + MiddleName;
 }

@@ -13,7 +13,6 @@ public class BonusPayoutValueResponse {
 
     public BonusPayoutValueResponse(BonusPayoutValue bonus_payout_value) {
         this.payout_type_id = bonus_payout_value.getPayoutTypeId();
-        this.payout_type = bonus_payout_value.getPayoutType();
         this.value = bonus_payout_value.getValue();
     }
 

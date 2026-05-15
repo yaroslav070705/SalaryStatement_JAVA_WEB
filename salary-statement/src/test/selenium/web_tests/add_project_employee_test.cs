@@ -2,7 +2,7 @@ using OpenQA.Selenium;
 
 public static class AddProjectEmployeeTest
 {
-    public static void Run(ProjectTestData project, EmployeeTestData employee)
+    public static RoleAssignmentTestData Run(ProjectTestData project, EmployeeTestData employee)
     {
         using IWebDriver driver = ProjectInformationTestHelper.CreateDriver();
 
@@ -22,7 +22,7 @@ public static class AddProjectEmployeeTest
             .First(row => row.Text.Contains(employee.FullName, StringComparison.OrdinalIgnoreCase));
         employeeRow.Click();
 
-        ProjectInformationTestHelper.SelectFirstAvailableRole(driver);
+        string roleName = ProjectInformationTestHelper.SelectFirstAvailableRole(driver);
 
         ProjectInformationTestHelper.WaitUntil(driver, "кнопка Добавить работника в проект доступна", d => d.FindElement(By.Id("submitAddWorkerBtn")).Enabled);
         driver.FindElement(By.Id("submitAddWorkerBtn")).Click();
@@ -40,5 +40,9 @@ public static class AddProjectEmployeeTest
         {
             throw new InvalidOperationException("Проверка не пройдена: работник не появился в таблице проекта: " + employee.FullName);
         }
+
+        return new RoleAssignmentTestData(project.Name, roleName);
     }
 }
+
+public sealed record RoleAssignmentTestData(string ProjectName, string RoleName);

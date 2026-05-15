@@ -323,4 +323,22 @@
 
     </entity>
 
+    <entity class="y.cloud.java.salary_statement_models.BonusPayoutValue" access="FIELD">
+
+        <table name="Bonus_Payouts_Values"/>
+
+        <attributes>
+
+            <id name="payout_type_id">
+                <column name="payout_type_id"/>
+            </id>
+
+            <basic name="value">
+                <column name="value"/>
+            </basic>
+
+        </attributes>
+
+    </entity>
+
 </entity-mappings>

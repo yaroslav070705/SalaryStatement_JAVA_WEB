@@ -329,16 +329,13 @@
 
         <attributes>
 
+            <id name="payout_type_id">
+                <column name="payout_type_id"/>
+            </id>
+
             <basic name="value">
                 <column name="value"/>
             </basic>
-
-            <many-to-one name="payout_type_id"
-                         target-entity="y.cloud.java.salary_statement_models.PayoutType"
-                         id="true"
-                         optional="false">
-                <join-column name="payout_type_id"/>
-            </many-to-one>
 
         </attributes>
 

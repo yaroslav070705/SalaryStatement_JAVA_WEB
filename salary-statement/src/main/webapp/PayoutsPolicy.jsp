@@ -190,10 +190,7 @@
         }
 
         .bottom {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 14px;
-            align-items: start;
+            display: block;
         }
 
         .editor {
@@ -284,23 +281,9 @@
             border-color: var(--accent);
         }
 
-        .btn-danger {
-            background: var(--danger);
-            color: #ffffff;
-            border-color: var(--danger);
-            margin-top: 10px;
-        }
-
         @media (max-width: 1000px) {
             .grid-top, .grid-middle {
                 grid-template-columns: 1fr;
-            }
-            .bottom {
-                grid-template-columns: 1fr;
-            }
-            .btn-danger {
-                width: fit-content;
-                margin: 0 auto;
             }
         }
     </style>
@@ -323,7 +306,7 @@
             <div class="card-head"><h2 class="card-title">По должностям</h2></div>
             <div class="table-wrap">
                 <table>
-                    <thead><tr><th>Размер</th><th>Должность</th></tr></thead>
+                    <thead><tr><th>Размер</th><th>Должность</th><th>Редактировать</th></tr></thead>
                     <tbody id="byPostTableBody"></tbody>
                 </table>
             </div>
@@ -333,7 +316,7 @@
             <div class="card-head"><h2 class="card-title">Стаж</h2></div>
             <div class="table-wrap">
                 <table>
-                    <thead><tr><th>Размер</th><th>Срок стажа</th></tr></thead>
+                    <thead><tr><th>Размер</th><th>Срок стажа</th><th>Редактировать</th></tr></thead>
                     <tbody id="byExperienceTableBody"></tbody>
                 </table>
             </div>
@@ -345,7 +328,7 @@
             <div class="card-head"><h2 class="card-title">Премиальные</h2></div>
             <div class="table-wrap">
                 <table>
-                    <thead><tr><th>Размер</th><th>Основание</th></tr></thead>
+                    <thead><tr><th>Размер</th><th>Основание</th><th>Редактировать</th></tr></thead>
                     <tbody id="bonusTableBody"></tbody>
                 </table>
             </div>
@@ -359,7 +342,7 @@
             </div>
             <div class="table-wrap">
                 <table>
-                    <thead><tr><th>Размер</th><th>Роль</th></tr></thead>
+                    <thead><tr><th>Размер</th><th>Роль</th><th>Редактировать</th></tr></thead>
                     <tbody id="byProjectTableBody"></tbody>
                 </table>
             </div>
@@ -379,7 +362,7 @@
 
                 <div class="policy-form-fields" data-policy-fields="post">
                     <div class="form-row"><label for="postPolicyValueInput">Размер</label><input id="postPolicyValueInput" type="number" step="0.01"></div>
-                    <div class="form-row"><label for="postPolicyPostSelect">Должность</label><select id="postPolicyPostSelect"><option value="">Выберите должность</option></select></div>
+                    <div class="form-row"><label for="postPolicyPostInput">Должность</label><input id="postPolicyPostInput" type="text"></div>
                 </div>
 
                 <div class="policy-form-fields" data-policy-fields="experience">
@@ -403,8 +386,6 @@
                 <button class="btn btn-primary" id="submitAddPolicyBtn" type="button" disabled>Добавить</button>
             </div>
         </article>
-
-        <button class="btn btn-danger" type="button">Удалить</button>
     </section>
 </main>
 
@@ -418,9 +399,10 @@
         const menuPoliciesBtn = document.getElementById("menuPoliciesBtn");
         const byPostTableBody = document.getElementById("byPostTableBody");
         const byExperienceTableBody = document.getElementById("byExperienceTableBody");
+        const bonusTableBody = document.getElementById("bonusTableBody");
         const projectFilterSelect = document.getElementById("projectFilterSelect");
         const byProjectTableBody = document.getElementById("byProjectTableBody");
-        const postPolicyPostSelect = document.getElementById("postPolicyPostSelect");
+        const postPolicyPostInput = document.getElementById("postPolicyPostInput");
         const projectPolicyProjectSelect = document.getElementById("projectPolicyProjectSelect");
         const projectPolicyRoleSelect = document.getElementById("projectPolicyRoleSelect");
         const policyTypeButtons = Array.from(document.querySelectorAll(".policy-type-btn"));
@@ -428,6 +410,7 @@
         const cancelAddPolicyBtn = document.getElementById("cancelAddPolicyBtn");
         const submitAddPolicyBtn = document.getElementById("submitAddPolicyBtn");
         let selectedPolicyType = "";
+        let editingPolicy = null;
 
         const asText = function (value) {
             if (value === null || value === undefined) {
@@ -473,8 +456,19 @@
             }
         };
 
+        const setProjectRoleFieldsReadonly = function (readonly) {
+            if (projectPolicyProjectSelect) {
+                projectPolicyProjectSelect.disabled = readonly;
+            }
+            if (projectPolicyRoleSelect) {
+                projectPolicyRoleSelect.disabled = readonly;
+            }
+        };
+
         const setSelectedPolicyType = function (policyType) {
             selectedPolicyType = policyType || "";
+            editingPolicy = null;
+            setProjectRoleFieldsReadonly(false);
 
             policyTypeButtons.forEach(function (button) {
                 button.classList.toggle("active", button.dataset.policyType === selectedPolicyType);
@@ -495,6 +489,8 @@
 
         const resetAddPolicyForm = function () {
             selectedPolicyType = "";
+            editingPolicy = null;
+            setProjectRoleFieldsReadonly(false);
             policyTypeButtons.forEach(function (button) {
                 button.classList.remove("active");
             });
@@ -504,7 +500,394 @@
                     field.value = "";
                 });
             });
+            if (submitAddPolicyBtn) {
+                submitAddPolicyBtn.textContent = "Добавить";
+            }
             updateAddPolicyButtons();
+        };
+
+        const setFieldValue = function (id, value) {
+            const field = document.getElementById(id);
+            if (!field) {
+                return;
+            }
+
+            field.value = asText(value);
+            field.dispatchEvent(new Event("input", { bubbles: true }));
+            field.dispatchEvent(new Event("change", { bubbles: true }));
+        };
+
+        const setSelectByText = function (select, text) {
+            if (!select) {
+                return;
+            }
+
+            const normalizedText = asText(text).toLowerCase();
+            const option = Array.from(select.options).find(function (item) {
+                return asText(item.textContent).toLowerCase() === normalizedText;
+            });
+
+            select.value = option ? option.value : "";
+            select.dispatchEvent(new Event("input", { bubbles: true }));
+            select.dispatchEvent(new Event("change", { bubbles: true }));
+        };
+
+        const appendEditCell = function (tr, onClick) {
+            const td = document.createElement("td");
+            const button = document.createElement("button");
+            button.className = "btn";
+            button.type = "button";
+            button.textContent = "Редактировать";
+            button.addEventListener("click", onClick);
+            td.appendChild(button);
+            tr.appendChild(td);
+        };
+
+        const editPostPolicy = function (policy) {
+            setSelectedPolicyType("post");
+            editingPolicy = {
+                type: "post",
+                postId: asText(policy.postId || policy.post_id || policy.id)
+            };
+            setFieldValue("postPolicyValueInput", policy.payoutValue || policy.payout_value);
+            setFieldValue("postPolicyPostInput", policy.postName || policy.post_name);
+            if (submitAddPolicyBtn) {
+                submitAddPolicyBtn.textContent = "Сохранить";
+            }
+            updateAddPolicyButtons();
+        };
+
+        const editExperiencePolicy = function (policy) {
+            setSelectedPolicyType("experience");
+            editingPolicy = {
+                type: "experience",
+                experienceId: asText(policy.experienceId || policy.experience_id || policy.id)
+            };
+            setFieldValue("experiencePolicyValueInput", policy.value || policy.payoutValue || policy.payout_value);
+            setFieldValue("experiencePolicyTermInput", policy.workExperience || policy.work_experience);
+            if (submitAddPolicyBtn) {
+                submitAddPolicyBtn.textContent = "Сохранить";
+            }
+            updateAddPolicyButtons();
+        };
+
+        const editBonusPolicy = function (policy) {
+            setSelectedPolicyType("bonus");
+            editingPolicy = {
+                type: "bonus",
+                payoutTypeId: asText(policy.payoutTypeId || policy.payout_type_id || policy.id)
+            };
+            setFieldValue("bonusPolicyValueInput", policy.value || policy.payoutValue || policy.payout_value);
+            setFieldValue("bonusPolicyReasonInput", policy.payoutType || policy.payout_type);
+            if (submitAddPolicyBtn) {
+                submitAddPolicyBtn.textContent = "Сохранить";
+            }
+            updateAddPolicyButtons();
+        };
+
+        const editRolePolicy = function (policy) {
+            setSelectedPolicyType("project");
+            editingPolicy = {
+                type: "project",
+                projectId: asText(policy.projectId || policy.project_id) || (projectFilterSelect ? projectFilterSelect.value : ""),
+                roleId: asText(policy.roleId || policy.role_id)
+            };
+            setFieldValue("projectPolicyValueInput", policy.value || policy.payoutValue || policy.payout_value);
+            if (projectPolicyProjectSelect && projectFilterSelect) {
+                projectPolicyProjectSelect.value = editingPolicy.projectId;
+                projectPolicyProjectSelect.dispatchEvent(new Event("input", { bubbles: true }));
+                projectPolicyProjectSelect.dispatchEvent(new Event("change", { bubbles: true }));
+            }
+            if (projectPolicyRoleSelect && editingPolicy.roleId) {
+                projectPolicyRoleSelect.value = editingPolicy.roleId;
+                projectPolicyRoleSelect.dispatchEvent(new Event("input", { bubbles: true }));
+                projectPolicyRoleSelect.dispatchEvent(new Event("change", { bubbles: true }));
+            } else {
+                setSelectByText(projectPolicyRoleSelect, policy.roleName || policy.role_name);
+                if (projectPolicyRoleSelect) {
+                    editingPolicy.roleId = projectPolicyRoleSelect.value;
+                }
+            }
+            setProjectRoleFieldsReadonly(true);
+            if (submitAddPolicyBtn) {
+                submitAddPolicyBtn.textContent = "Сохранить";
+            }
+            updateAddPolicyButtons();
+        };
+
+        const addPostPolicy = async function () {
+            const value = document.getElementById("postPolicyValueInput").value;
+            const postName = postPolicyPostInput ? postPolicyPostInput.value.trim() : "";
+            if (!value || !postName) {
+                updateAddPolicyButtons();
+                return;
+            }
+
+            try {
+                const response = await fetch(contextPath + "/payouts/policies/posts", {
+                    method: "POST",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        payoutValue: Number(value),
+                        postName: postName
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error("Ошибка HTTP (add post policy): " + response.status);
+                }
+
+                await loadPostPolicies();
+                resetAddPolicyForm();
+            } catch (error) {
+                console.error("Ошибка добавления политики выплат по должности:", error);
+            }
+        };
+
+        const addExperiencePolicy = async function () {
+            const value = document.getElementById("experiencePolicyValueInput").value;
+            const workExperience = document.getElementById("experiencePolicyTermInput").value;
+            if (!value || !workExperience) {
+                updateAddPolicyButtons();
+                return;
+            }
+
+            try {
+                const response = await fetch(contextPath + "/payouts/policies/work_experience", {
+                    method: "POST",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        value: Number(value),
+                        workExperience: Number(workExperience)
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error("Ошибка HTTP (add work experience policy): " + response.status);
+                }
+
+                await loadExperiencePolicies();
+                resetAddPolicyForm();
+            } catch (error) {
+                console.error("Ошибка добавления политики выплат по стажу:", error);
+            }
+        };
+
+        const addBonusPolicy = async function () {
+            const value = document.getElementById("bonusPolicyValueInput").value;
+            const payoutType = document.getElementById("bonusPolicyReasonInput").value.trim();
+            if (!value || !payoutType) {
+                updateAddPolicyButtons();
+                return;
+            }
+
+            try {
+                const response = await fetch(contextPath + "/payouts/policies/bonuses", {
+                    method: "POST",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        value: Number(value),
+                        payoutType: payoutType
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error("Ошибка HTTP (add bonus policy): " + response.status);
+                }
+
+                await loadBonusPolicies();
+                resetAddPolicyForm();
+            } catch (error) {
+                console.error("Ошибка добавления премиальной политики выплат:", error);
+            }
+        };
+
+        const addRolePolicy = async function () {
+            const value = document.getElementById("projectPolicyValueInput").value;
+            const projectId = projectPolicyProjectSelect ? projectPolicyProjectSelect.value : "";
+            const roleId = projectPolicyRoleSelect ? projectPolicyRoleSelect.value : "";
+            if (!value || !projectId || !roleId) {
+                updateAddPolicyButtons();
+                return;
+            }
+
+            try {
+                const response = await fetch(contextPath + "/payouts/policies/roles", {
+                    method: "POST",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        value: Number(value),
+                        projectId: projectId,
+                        roleId: roleId
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error("Ошибка HTTP (add role policy): " + response.status);
+                }
+
+                if (projectFilterSelect) {
+                    projectFilterSelect.value = projectId;
+                }
+                await loadRolePolicies(projectId);
+                resetAddPolicyForm();
+            } catch (error) {
+                console.error("Ошибка добавления политики выплат по проекту и роли:", error);
+            }
+        };
+
+        const updatePostPolicy = async function () {
+            if (!editingPolicy || editingPolicy.type !== "post" || !editingPolicy.postId) {
+                return;
+            }
+
+            const value = document.getElementById("postPolicyValueInput").value;
+            const postName = postPolicyPostInput ? postPolicyPostInput.value.trim() : "";
+            if (!value || !postName) {
+                updateAddPolicyButtons();
+                return;
+            }
+
+            try {
+                const response = await fetch(contextPath + "/payouts/policies/posts/" + encodeURIComponent(editingPolicy.postId), {
+                    method: "PUT",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        payoutValue: Number(value),
+                        postName: postName
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error("Ошибка HTTP (update post policy): " + response.status);
+                }
+
+                await loadPostPolicies();
+                resetAddPolicyForm();
+            } catch (error) {
+                console.error("Ошибка сохранения политики выплат по должности:", error);
+            }
+        };
+
+        const updateExperiencePolicy = async function () {
+            if (!editingPolicy || editingPolicy.type !== "experience" || !editingPolicy.experienceId) {
+                return;
+            }
+
+            const value = document.getElementById("experiencePolicyValueInput").value;
+            const workExperience = document.getElementById("experiencePolicyTermInput").value;
+            if (!value || !workExperience) {
+                updateAddPolicyButtons();
+                return;
+            }
+
+            try {
+                const response = await fetch(contextPath + "/payouts/policies/work_experience/" + encodeURIComponent(editingPolicy.experienceId), {
+                    method: "PUT",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        value: Number(value),
+                        workExperience: Number(workExperience)
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error("Ошибка HTTP (update work experience policy): " + response.status);
+                }
+
+                await loadExperiencePolicies();
+                resetAddPolicyForm();
+            } catch (error) {
+                console.error("Ошибка сохранения политики выплат по стажу:", error);
+            }
+        };
+
+        const updateBonusPolicy = async function () {
+            if (!editingPolicy || editingPolicy.type !== "bonus" || !editingPolicy.payoutTypeId) {
+                return;
+            }
+
+            const value = document.getElementById("bonusPolicyValueInput").value;
+            if (!value) {
+                updateAddPolicyButtons();
+                return;
+            }
+
+            try {
+                const response = await fetch(contextPath + "/payouts/policies/bonuses/" + encodeURIComponent(editingPolicy.payoutTypeId), {
+                    method: "PUT",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        value: Number(value)
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error("Ошибка HTTP (update bonus policy): " + response.status);
+                }
+
+                await loadBonusPolicies();
+                resetAddPolicyForm();
+            } catch (error) {
+                console.error("Ошибка сохранения премиальной политики выплат:", error);
+            }
+        };
+
+        const updateRolePolicy = async function () {
+            if (!editingPolicy || editingPolicy.type !== "project") {
+                return;
+            }
+
+            const projectId = editingPolicy.projectId || (projectPolicyProjectSelect ? projectPolicyProjectSelect.value : "");
+            const roleId = editingPolicy.roleId || (projectPolicyRoleSelect ? projectPolicyRoleSelect.value : "");
+            const value = document.getElementById("projectPolicyValueInput").value;
+            if (!projectId || !roleId || !value) {
+                updateAddPolicyButtons();
+                return;
+            }
+
+            try {
+                const response = await fetch(contextPath + "/payouts/policies/roles/" + encodeURIComponent(projectId) + "/" + encodeURIComponent(roleId), {
+                    method: "PUT",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        value: Number(value)
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error("Ошибка HTTP (update role policy): " + response.status);
+                }
+
+                await loadRolePolicies(projectId);
+                resetAddPolicyForm();
+            } catch (error) {
+                console.error("Ошибка сохранения политики выплат по проекту и роли:", error);
+            }
         };
 
         const renderPostPolicies = function (policies) {
@@ -514,7 +897,7 @@
 
             byPostTableBody.innerHTML = "";
             if (!Array.isArray(policies) || policies.length === 0) {
-                byPostTableBody.innerHTML = "<tr><td colspan='2' style='text-align:center;'>Политики не найдены</td></tr>";
+                byPostTableBody.innerHTML = "<tr><td colspan='3' style='text-align:center;'>Политики не найдены</td></tr>";
                 return;
             }
 
@@ -527,6 +910,9 @@
                     const td = document.createElement("td");
                     td.textContent = value;
                     tr.appendChild(td);
+                });
+                appendEditCell(tr, function () {
+                    editPostPolicy(policy);
                 });
                 byPostTableBody.appendChild(tr);
             });
@@ -547,7 +933,7 @@
             } catch (error) {
                 console.error("Ошибка загрузки политик выплат по должностям:", error);
                 if (byPostTableBody) {
-                    byPostTableBody.innerHTML = "<tr><td colspan='2' style='text-align:center;'>Ошибка загрузки</td></tr>";
+                    byPostTableBody.innerHTML = "<tr><td colspan='3' style='text-align:center;'>Ошибка загрузки</td></tr>";
                 }
             }
         };
@@ -559,7 +945,7 @@
 
             byExperienceTableBody.innerHTML = "";
             if (!Array.isArray(policies) || policies.length === 0) {
-                byExperienceTableBody.innerHTML = "<tr><td colspan='2' style='text-align:center;'>Политики не найдены</td></tr>";
+                byExperienceTableBody.innerHTML = "<tr><td colspan='3' style='text-align:center;'>Политики не найдены</td></tr>";
                 return;
             }
 
@@ -572,6 +958,9 @@
                     const td = document.createElement("td");
                     td.textContent = value;
                     tr.appendChild(td);
+                });
+                appendEditCell(tr, function () {
+                    editExperiencePolicy(policy);
                 });
                 byExperienceTableBody.appendChild(tr);
             });
@@ -592,50 +981,55 @@
             } catch (error) {
                 console.error("Ошибка загрузки политик выплат по стажу:", error);
                 if (byExperienceTableBody) {
-                    byExperienceTableBody.innerHTML = "<tr><td colspan='2' style='text-align:center;'>Ошибка загрузки</td></tr>";
+                    byExperienceTableBody.innerHTML = "<tr><td colspan='3' style='text-align:center;'>Ошибка загрузки</td></tr>";
                 }
             }
         };
 
-        const renderPostOptions = function (posts) {
-            if (!postPolicyPostSelect) {
+        const renderBonusPolicies = function (policies) {
+            if (!bonusTableBody) {
                 return;
             }
 
-            postPolicyPostSelect.innerHTML = "<option value=''>Выберите должность</option>";
-            if (!Array.isArray(posts)) {
+            bonusTableBody.innerHTML = "";
+            if (!Array.isArray(policies) || policies.length === 0) {
+                bonusTableBody.innerHTML = "<tr><td colspan='3' style='text-align:center;'>Политики не найдены</td></tr>";
                 return;
             }
 
-            posts.forEach(function (post) {
-                const postId = asText(post.id || post.postId || post.post_id);
-                if (!postId) {
-                    return;
-                }
-
-                const option = document.createElement("option");
-                option.value = postId;
-                option.textContent = asText(post.postName || post.post_name) || "Без названия";
-                postPolicyPostSelect.appendChild(option);
+            policies.forEach(function (policy) {
+                const tr = document.createElement("tr");
+                [
+                    asText(policy.value || policy.payoutValue || policy.payout_value) || "—",
+                    asText(policy.payoutType || policy.payout_type) || "—"
+                ].forEach(function (value) {
+                    const td = document.createElement("td");
+                    td.textContent = value;
+                    tr.appendChild(td);
+                });
+                appendEditCell(tr, function () {
+                    editBonusPolicy(policy);
+                });
+                bonusTableBody.appendChild(tr);
             });
         };
 
-        const loadPosts = async function () {
+        const loadBonusPolicies = async function () {
             try {
-                const response = await fetch(contextPath + "/posts", {
+                const response = await fetch(contextPath + "/payouts/policies/bonuses", {
                     method: "GET",
                     headers: { "Accept": "application/json" }
                 });
 
                 if (!response.ok) {
-                    throw new Error("Ошибка HTTP (posts): " + response.status);
+                    throw new Error("Ошибка HTTP (bonus policies): " + response.status);
                 }
 
-                renderPostOptions(await response.json());
+                renderBonusPolicies(await response.json());
             } catch (error) {
-                console.error("Ошибка загрузки должностей:", error);
-                if (postPolicyPostSelect) {
-                    postPolicyPostSelect.innerHTML = "<option value=''>Ошибка загрузки</option>";
+                console.error("Ошибка загрузки премиальных политик выплат:", error);
+                if (bonusTableBody) {
+                    bonusTableBody.innerHTML = "<tr><td colspan='3' style='text-align:center;'>Ошибка загрузки</td></tr>";
                 }
             }
         };
@@ -743,7 +1137,7 @@
 
             byProjectTableBody.innerHTML = "";
             if (!Array.isArray(policies) || policies.length === 0) {
-                byProjectTableBody.innerHTML = "<tr><td colspan='2' style='text-align:center;'>Политики не найдены</td></tr>";
+                byProjectTableBody.innerHTML = "<tr><td colspan='3' style='text-align:center;'>Политики не найдены</td></tr>";
                 return;
             }
 
@@ -756,6 +1150,9 @@
                     const td = document.createElement("td");
                     td.textContent = value;
                     tr.appendChild(td);
+                });
+                appendEditCell(tr, function () {
+                    editRolePolicy(policy);
                 });
                 byProjectTableBody.appendChild(tr);
             });
@@ -783,7 +1180,7 @@
             } catch (error) {
                 console.error("Ошибка загрузки политик выплат по ролям:", error);
                 if (byProjectTableBody) {
-                    byProjectTableBody.innerHTML = "<tr><td colspan='2' style='text-align:center;'>Ошибка загрузки</td></tr>";
+                    byProjectTableBody.innerHTML = "<tr><td colspan='3' style='text-align:center;'>Ошибка загрузки</td></tr>";
                 }
             }
         };
@@ -843,14 +1240,50 @@
         }
 
         if (submitAddPolicyBtn) {
-            submitAddPolicyBtn.addEventListener("click", function () {
+            submitAddPolicyBtn.addEventListener("click", async function () {
+                if (editingPolicy) {
+                    if (editingPolicy.type === "post") {
+                        await updatePostPolicy();
+                        return;
+                    }
+                    if (editingPolicy.type === "experience") {
+                        await updateExperiencePolicy();
+                        return;
+                    }
+                    if (editingPolicy.type === "bonus") {
+                        await updateBonusPolicy();
+                        return;
+                    }
+                    if (editingPolicy.type === "project") {
+                        await updateRolePolicy();
+                        return;
+                    }
+                }
+
+                if (selectedPolicyType === "post") {
+                    await addPostPolicy();
+                    return;
+                }
+                if (selectedPolicyType === "experience") {
+                    await addExperiencePolicy();
+                    return;
+                }
+                if (selectedPolicyType === "bonus") {
+                    await addBonusPolicy();
+                    return;
+                }
+                if (selectedPolicyType === "project") {
+                    await addRolePolicy();
+                    return;
+                }
+
                 updateAddPolicyButtons();
             });
         }
 
         loadPostPolicies();
         loadExperiencePolicies();
-        loadPosts();
+        loadBonusPolicies();
         loadProjects();
         loadRoles();
         resetAddPolicyForm();

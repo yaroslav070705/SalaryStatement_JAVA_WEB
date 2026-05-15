@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import y.cloud.java.dao_models.EmployeeRoleHistoryDAO;
+import y.cloud.java.dao_models.ProjectDAO;
 import y.cloud.java.dao_models.RoleDAO;
 import y.cloud.java.dto_models.EmployeeRoleHistoryRequest;
 import y.cloud.java.dto_models.EmployeeRoleHistoryResponse;
@@ -25,6 +26,9 @@ public class RolesController {
     @Autowired
     private EmployeeRoleHistoryDAO role_history_dao;
 
+    @Autowired
+    private ProjectDAO project_dao;
+
     @GetMapping
     public List<Role> getAll() { return role_dao.findAll(); }
 
@@ -39,6 +43,7 @@ public class RolesController {
         for(EmployeeRoleHistory erh : emp_post_hist_list) {
             EmployeeRoleHistoryResponse resp = new EmployeeRoleHistoryResponse(erh);
             resp.setRoleName(role_dao.findById(resp.getRoleId()).getRoleName());
+            resp.setProjectName(project_dao.findById(resp.getProjectId()).getProjectName());
             responses.add(resp);
         }
 

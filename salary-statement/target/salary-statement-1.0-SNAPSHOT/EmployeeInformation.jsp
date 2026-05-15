@@ -203,16 +203,6 @@
             border-color: #0f766e;
         }
 
-        .btn-filter {
-            padding: 8px 12px;
-            font-size: 13px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: #ffffff;
-            color: var(--text);
-            cursor: pointer;
-        }
-
         .delete-panel {
             position: fixed;
             top: 16px;
@@ -442,7 +432,6 @@
         <article class="table-card">
             <div class="table-head">
                 <h2 class="table-title">История Выплат</h2>
-                <button class="btn-filter" type="button">Фильтры</button>
             </div>
             <div class="table-scroll">
                 <table>

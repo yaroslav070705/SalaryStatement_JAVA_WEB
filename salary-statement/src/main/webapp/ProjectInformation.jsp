@@ -340,7 +340,6 @@
     <section class="card top-right">
         <div class="card-head">
             <h2 class="title">Список работников</h2>
-            <button class="btn btn-danger" type="button">Удалить проект</button>
         </div>
         <div class="table-wrap">
             <table>

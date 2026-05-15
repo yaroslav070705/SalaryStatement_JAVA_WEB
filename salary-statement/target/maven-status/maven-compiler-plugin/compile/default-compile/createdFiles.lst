@@ -46,6 +46,7 @@ y/cloud/java/dto_models/ProjectResponse.class
 y/cloud/java/dao_models/EmployeeInterfaceDAO.class
 y/cloud/java/salary_statement_models/EmployeePostHistoryPK.class
 y/cloud/java/dao_models/PayoutTypeDAO.class
+y/cloud/java/salary_statement_models/BonusPayoutValuePK.class
 y/cloud/java/dto_models/ProjectSetupResponse.class
 y/cloud/java/dao_models/RoleDAO.class
 y/cloud/java/controllers/RolesController.class
