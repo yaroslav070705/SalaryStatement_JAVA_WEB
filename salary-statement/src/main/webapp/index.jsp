@@ -182,7 +182,7 @@
         .layout {
             display: flex;
             min-height: 100vh;
-            padding-top: 80px;
+            padding-top: 0;
         }
 
         .sidebar {
@@ -277,17 +277,26 @@
         }
 
         .page-title {
-            text-align: right;
-            font-size: 26px;
+            margin: 84px auto 28px;
+            width: fit-content;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 12px 46px;
+            background: var(--bg-card);
+            box-shadow: var(--shadow);
+            font-size: 28px;
             font-weight: 600;
-            margin-bottom: 20px;
-            color: var(--text-main);
+            color: var(--accent);
+        }
+        .table-tools {
+            width: 66.67%;
+            margin: 0 auto 10px;
+            display: flex;
+            justify-content: flex-end;
         }
         .workers-count {
-            width: 12.5%;
             min-width: 180px;
-            margin-left: auto;
-            margin-bottom: 10px;
+            width: fit-content;
             font-size: 14px;
             color: var(--text-main);
             background: var(--bg-card);
@@ -307,7 +316,7 @@
         }
         .table-scroll {
             width: 66.67%;
-            margin-left: auto;
+            margin: 0 auto;
             max-height: 330px;
             overflow-y: auto;
             border-radius: var(--radius);
@@ -357,12 +366,13 @@
         }
 
         @media (max-width: 768px) {
-            .layout { flex-direction: column; padding-top: 70px; }
+            .layout { flex-direction: column; padding-top: 0; }
             .sidebar { width: 100%; padding: 10px 20px; align-items: flex-start; }
             .filters-wrap { width: 100%; }
             .filters-row { grid-template-columns: 1fr; }
             .content { padding: 10px 16px 30px; }
-            .page-title { text-align: left; }
+            .page-title { margin-top: 84px; }
+            .table-tools { width: 100%; }
             .workers-count { width: 100%; }
             .table-scroll { width: 100%; }
             .data-table th, .data-table td { padding: 10px 12px; font-size: 14px; }
@@ -420,6 +430,8 @@
         </div>
     </div>
 
+    <h1 class="page-title">Сотрудники</h1>
+
     <main class="layout">
         <aside class="sidebar">
             <div class="filters-wrap">
@@ -447,14 +459,6 @@
                             <select id="filterPostSelect"></select>
                         </div>
                         <div class="filters-row">
-                            <label for="filterProjectSelect">Проект</label>
-                            <select id="filterProjectSelect"></select>
-                        </div>
-                        <div class="filters-row">
-                            <label for="filterRoleSelect">Роль в проекте</label>
-                            <select id="filterRoleSelect"></select>
-                        </div>
-                        <div class="filters-row">
                             <label for="filterBonusSelect">Премирован</label>
                             <select id="filterBonusSelect">
                                 <option value="">Не выбрано</option>
@@ -471,8 +475,9 @@
         </aside>
 
         <section class="content">
-            <h1 class="page-title">Список работников</h1>
-            <div class="workers-count" id="workersCount">Количество работников: 0</div>
+            <div class="table-tools">
+                <div class="workers-count" id="workersCount">Количество работников: 0</div>
+            </div>
 
             <div class="table-scroll">
                 <table class="data-table">
@@ -501,9 +506,16 @@
         const createOverlay = document.getElementById("createOverlay");
         const toggleFiltersBtn = document.getElementById("toggleFiltersBtn");
         const filtersPanel = document.getElementById("filtersPanel");
+        const applyFiltersBtn = document.getElementById("applyFiltersBtn");
         const cancelCreateBtn = document.getElementById("cancelCreateBtn");
         const submitCreateBtn = document.getElementById("submitCreateBtn");
         const createPostInput = document.getElementById("createPostInput");
+        const filterNameInput = document.getElementById("filterNameInput");
+        const filterSurnameInput = document.getElementById("filterSurnameInput");
+        const filterMiddleNameInput = document.getElementById("filterMiddleNameInput");
+        const filterBirthDateInput = document.getElementById("filterBirthDateInput");
+        const filterPostSelect = document.getElementById("filterPostSelect");
+        const filterBonusSelect = document.getElementById("filterBonusSelect");
         const requestResult = document.getElementById("requestResult");
         const workersCount = document.getElementById("workersCount");
         const employeesTableBody = document.getElementById("employeesTableBody");
@@ -563,12 +575,40 @@
             });
         }
 
-        const loadEmployees = async function () {
+        if (applyFiltersBtn) {
+            applyFiltersBtn.addEventListener("click", function () {
+                loadEmployees(buildEmployeeFilterParams());
+                if (filtersPanel) {
+                    filtersPanel.classList.remove("active");
+                }
+            });
+        }
+
+        const buildEmployeeFilterParams = function () {
+            const params = new URLSearchParams();
+            const appendIfFilled = function (key, element) {
+                if (element && element.value) {
+                    params.append(key, element.value);
+                }
+            };
+
+            appendIfFilled("name", filterNameInput);
+            appendIfFilled("surname", filterSurnameInput);
+            appendIfFilled("middle_name", filterMiddleNameInput);
+            appendIfFilled("birth_date", filterBirthDateInput);
+            appendIfFilled("post_id", filterPostSelect);
+            appendIfFilled("is_bonused", filterBonusSelect);
+
+            return params;
+        };
+
+        const loadEmployees = async function (params) {
             requestResult.textContent = "Загрузка...";
             requestResult.style.display = "block";
 
             try {
-                const response = await fetch(contextPath + "/employees", {
+                const query = params && params.toString() ? "?" + params.toString() : "";
+                const response = await fetch(contextPath + "/employees" + query, {
                     method: "GET",
                     headers: { "Accept": "application/json" }
                 });
@@ -644,7 +684,21 @@
             }
         };
 
-        const loadPostsForCreate = async function () {
+        const renderPostOptions = function (select, posts, placeholder) {
+            if (!select) {
+                return;
+            }
+
+            select.innerHTML = "<option value=\"\">" + placeholder + "</option>";
+            (Array.isArray(posts) ? posts : []).forEach(post => {
+                const option = document.createElement("option");
+                option.value = post.id || post.postId || post.post_id || "";
+                option.textContent = post.postName || post.post_name || "Без названия";
+                select.appendChild(option);
+            });
+        };
+
+        const loadPosts = async function () {
             if (postsLoaded) {
                 return;
             }
@@ -657,13 +711,8 @@
             }
 
             const posts = await response.json();
-            createPostInput.innerHTML = "<option value=\"\">Выберите должность</option>";
-            (Array.isArray(posts) ? posts : []).forEach(post => {
-                const option = document.createElement("option");
-                option.value = post.id || post.postId || post.post_id || "";
-                option.textContent = post.postName || post.post_name || "Без названия";
-                createPostInput.appendChild(option);
-            });
+            renderPostOptions(createPostInput, posts, "Выберите должность");
+            renderPostOptions(filterPostSelect, posts, "Не выбрано");
             postsLoaded = true;
         };
 
@@ -685,7 +734,7 @@
         if (addEmployeeBtn) {
             addEmployeeBtn.addEventListener("click", async function () {
                 try {
-                    await loadPostsForCreate();
+                    await loadPosts();
                 } catch (e) {
                     console.error("Ошибка загрузки должностей:", e);
                 }
@@ -744,6 +793,9 @@
         }
 
         loadEmployees();
+        loadPosts().catch(function (error) {
+            console.error("Ошибка загрузки должностей:", error);
+        });
     </script>
 
 </body>

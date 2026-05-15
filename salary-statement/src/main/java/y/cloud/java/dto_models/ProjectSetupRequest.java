@@ -7,6 +7,13 @@ public class ProjectSetupRequest {
     private UUID project_id;
     private UUID role_id;
 
+    public ProjectSetupRequest() {}
+    public ProjectSetupRequest(UUID employee_id, UUID project_id, UUID role_id) {
+        this.project_id = project_id;
+        this.employee_id = employee_id;
+        this.role_id = role_id;
+    }
+
     public UUID getEmployeeId() { return employee_id; }
     public UUID getProjectId() {
         return project_id;

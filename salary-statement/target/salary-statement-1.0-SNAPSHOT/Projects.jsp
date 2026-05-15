@@ -174,6 +174,11 @@
             color: var(--text);
         }
 
+        .btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+
         .btn-primary {
             background: var(--accent);
             color: #ffffff;
@@ -210,6 +215,16 @@
             z-index: 1;
         }
 
+        tbody tr.project-row {
+            cursor: pointer;
+        }
+
+        tbody tr.project-row:hover,
+        tbody tr.project-row:focus {
+            background: #eef8f6;
+            outline: none;
+        }
+
         @media (max-width: 1100px) {
             .layout { grid-template-columns: 1fr; }
         }
@@ -232,11 +247,11 @@
         <article class="card">
             <div class="card-head"><h2 class="card-title">Фильтры</h2></div>
             <div class="form">
-                <div class="form-row"><label>Название</label><input type="text"></div>
-                <div class="form-row"><label>Дата начала</label><input type="date"></div>
-                <div class="form-row"><label>Дата конца</label><input type="date"></div>
+                <div class="form-row"><label for="filterProjectNameInput">Название</label><input id="filterProjectNameInput" type="text"></div>
+                <div class="form-row"><label for="filterProjectStartDateInput">Дата начала</label><input id="filterProjectStartDateInput" type="date"></div>
+                <div class="form-row"><label for="filterProjectEndDateInput">Дата конца</label><input id="filterProjectEndDateInput" type="date"></div>
             </div>
-            <div class="actions"><button class="btn btn-primary" type="button">Применить</button></div>
+            <div class="actions"><button class="btn btn-primary" id="applyProjectFiltersBtn" type="button" disabled>Применить</button></div>
         </article>
 
         <article class="card table-card">
@@ -252,12 +267,12 @@
         <article class="card">
             <div class="card-head"><h2 class="card-title">Добавить проект</h2></div>
             <div class="form">
-                <div class="form-row"><label>Название</label><input type="text"></div>
-                <div class="form-row"><label>Дата начала</label><input type="date"></div>
+                <div class="form-row"><label for="createProjectNameInput">Название</label><input id="createProjectNameInput" type="text"></div>
+                <div class="form-row"><label for="createProjectStartDateInput">Дата начала</label><input id="createProjectStartDateInput" type="date"></div>
             </div>
             <div class="actions">
-                <button class="btn" type="button">Отменить</button>
-                <button class="btn btn-primary" type="button">Добавить</button>
+                <button class="btn" id="cancelCreateProjectBtn" type="button" disabled>Отменить</button>
+                <button class="btn btn-primary" id="submitCreateProjectBtn" type="button" disabled>Добавить</button>
             </div>
         </article>
     </section>
@@ -272,6 +287,14 @@
         const menuProjectsBtn = document.getElementById("menuProjectsBtn");
         const menuPoliciesBtn = document.getElementById("menuPoliciesBtn");
         const projectsTableBody = document.getElementById("projectsTableBody");
+        const filterProjectNameInput = document.getElementById("filterProjectNameInput");
+        const filterProjectStartDateInput = document.getElementById("filterProjectStartDateInput");
+        const filterProjectEndDateInput = document.getElementById("filterProjectEndDateInput");
+        const applyProjectFiltersBtn = document.getElementById("applyProjectFiltersBtn");
+        const createProjectNameInput = document.getElementById("createProjectNameInput");
+        const createProjectStartDateInput = document.getElementById("createProjectStartDateInput");
+        const cancelCreateProjectBtn = document.getElementById("cancelCreateProjectBtn");
+        const submitCreateProjectBtn = document.getElementById("submitCreateProjectBtn");
 
         if (menuBtn && menuPanel) {
             menuBtn.addEventListener("click", function (event) {
@@ -326,22 +349,66 @@
             };
 
             projects.forEach(function (project) {
+                const projectId = asText(project.projectId || project.project_id || project.id);
                 const projectName = asText(project.projectName || project.project_name || project.name) || "—";
                 const startDate = asText(project.startDate || project.start_date || project.dateStart) || "—";
                 const endDate = asText(project.endDate || project.end_date || project.dateEnd) || "—";
 
                 const tr = document.createElement("tr");
-                tr.innerHTML =
-                    "<td>" + projectName + "</td>" +
-                    "<td>" + startDate + "</td>" +
-                    "<td>" + endDate + "</td>";
+                const openProject = function () {
+                    if (projectId) {
+                        window.location.href = contextPath + "/ProjectInformation.jsp?id=" + encodeURIComponent(projectId);
+                    }
+                };
+
+                tr.className = "project-row";
+                tr.tabIndex = 0;
+                tr.setAttribute("role", "button");
+                tr.addEventListener("click", openProject);
+                tr.addEventListener("keydown", function (event) {
+                    if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        openProject();
+                    }
+                });
+
+                [projectName, startDate, endDate].forEach(function (value) {
+                    const td = document.createElement("td");
+                    td.textContent = value;
+                    tr.appendChild(td);
+                });
                 projectsTableBody.appendChild(tr);
             });
         };
 
-        const loadProjects = async function () {
+        const buildProjectFilterParams = function () {
+            const params = new URLSearchParams();
+            if (filterProjectNameInput && filterProjectNameInput.value.trim()) {
+                params.append("name", filterProjectNameInput.value.trim());
+            }
+            if (filterProjectStartDateInput && filterProjectStartDateInput.value) {
+                params.append("start_date", filterProjectStartDateInput.value);
+            }
+            if (filterProjectEndDateInput && filterProjectEndDateInput.value) {
+                params.append("end_date", filterProjectEndDateInput.value);
+            }
+            return params;
+        };
+
+        const isProjectFilterFilled = function () {
+            return Boolean(buildProjectFilterParams().toString());
+        };
+
+        const updateProjectFilterButton = function () {
+            if (applyProjectFiltersBtn) {
+                applyProjectFiltersBtn.disabled = !isProjectFilterFilled();
+            }
+        };
+
+        const loadProjects = async function (params) {
             try {
-                const response = await fetch(contextPath + "/projects", {
+                const query = params && params.toString() ? "?" + params.toString() : "";
+                const response = await fetch(contextPath + "/projects" + query, {
                     method: "GET",
                     headers: { "Accept": "application/json" }
                 });
@@ -360,6 +427,103 @@
             }
         };
 
+        [filterProjectNameInput, filterProjectStartDateInput, filterProjectEndDateInput].forEach(function (input) {
+            if (input) {
+                input.addEventListener("input", updateProjectFilterButton);
+                input.addEventListener("change", updateProjectFilterButton);
+            }
+        });
+
+        if (applyProjectFiltersBtn) {
+            applyProjectFiltersBtn.addEventListener("click", function () {
+                loadProjects(buildProjectFilterParams());
+            });
+        }
+
+        const isCreateProjectFormFilled = function () {
+            return Boolean(
+                createProjectNameInput &&
+                createProjectStartDateInput &&
+                createProjectNameInput.value.trim() &&
+                createProjectStartDateInput.value
+            );
+        };
+
+        const updateCreateProjectButtons = function () {
+            const enabled = isCreateProjectFormFilled();
+            if (cancelCreateProjectBtn) {
+                cancelCreateProjectBtn.disabled = !enabled;
+            }
+            if (submitCreateProjectBtn) {
+                submitCreateProjectBtn.disabled = !enabled;
+            }
+        };
+
+        const resetCreateProjectForm = function () {
+            if (createProjectNameInput) {
+                createProjectNameInput.value = "";
+            }
+            if (createProjectStartDateInput) {
+                createProjectStartDateInput.value = "";
+            }
+            updateCreateProjectButtons();
+        };
+
+        if (createProjectNameInput) {
+            createProjectNameInput.addEventListener("input", updateCreateProjectButtons);
+        }
+
+        if (createProjectStartDateInput) {
+            createProjectStartDateInput.addEventListener("input", updateCreateProjectButtons);
+            createProjectStartDateInput.addEventListener("change", updateCreateProjectButtons);
+        }
+
+        if (cancelCreateProjectBtn) {
+            cancelCreateProjectBtn.addEventListener("click", resetCreateProjectForm);
+        }
+
+        if (submitCreateProjectBtn) {
+            submitCreateProjectBtn.addEventListener("click", async function () {
+                if (!isCreateProjectFormFilled()) {
+                    return;
+                }
+
+                submitCreateProjectBtn.disabled = true;
+                if (cancelCreateProjectBtn) {
+                    cancelCreateProjectBtn.disabled = true;
+                }
+
+                const payload = {
+                    projectName: createProjectNameInput.value.trim(),
+                    startDate: createProjectStartDateInput.value,
+                    endDate: null
+                };
+
+                try {
+                    const response = await fetch(contextPath + "/projects", {
+                        method: "POST",
+                        headers: {
+                            "Accept": "application/json",
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error("Ошибка HTTP (create project): " + response.status);
+                    }
+
+                    resetCreateProjectForm();
+                    await loadProjects();
+                } catch (error) {
+                    console.error("Ошибка добавления проекта:", error);
+                    updateCreateProjectButtons();
+                }
+            });
+        }
+
+        updateCreateProjectButtons();
+        updateProjectFilterButton();
         loadProjects();
     })();
 </script>

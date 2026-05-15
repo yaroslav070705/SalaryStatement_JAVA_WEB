@@ -12,7 +12,7 @@ CREATE DATABASE salary_statement_db
 CREATE TABLE Posts (
 	post_id UUID PRIMARY KEY,
 	post_name VARCHAR(50),
-	payout_value MONEY
+	payout_value DOUBLE
 );
 
 CREATE TABLE Employees (
@@ -42,13 +42,19 @@ CREATE TABLE Payouts (
 	employee_id UUID REFERENCES Employee(employee_id),
 	payout_type_id UUID REFERENCES Payout_Types(payout_type_id),
 	"date" DATE,
-	"value" MONEY,
+	"value" DOUBLE,
 	PRIMARY KEY(employee_id, payout_type_id)
 );
 
 CREATE TABLE Roles (
 	role_id UUID PRIMARY KEY,
 	role_name VARCHAR(50)
+);
+
+CREATE TABLE Bonus_Payouts_Values (
+	payout_type_id UUID REFERENCES Payout_Types(payout_type_id),
+	"value" INTEGER,
+	PRIMARY KEY(payout_type_id)
 );
 
 CREATE TABLE Projects (
@@ -68,7 +74,7 @@ CREATE TABLE Projects_Setup (
 CREATE TABLE Role_Payout_Value (
 	project_id UUID REFERENCES Projects(project_id),
 	role_id UUID REFERENCES Roles(role_id),
-	"value" MONEY,
+	"value" DOUBLE,
 	PRIMARY KEY(project_id, role_id)
 );
 
@@ -84,5 +90,5 @@ CREATE TABLE Employees_Roles_History (
 CREATE TABLE Work_Experience_Payout_Value (
 	experience_id UUID PRIMARY KEY,
 	work_experience INTERVAL,
-	"value" MONEY
+	"value" DOUBLE
 );

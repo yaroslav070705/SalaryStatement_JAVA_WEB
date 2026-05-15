@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "dgSpecHash": "218Mn3lHbnc=",
+  "success": true,
+  "projectFilePath": "/home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/test/selenium/web_tests/web_tests.csproj",
+  "expectedPackageFiles": [
+    "/home/ykucher/.nuget/packages/selenium.webdriver/4.44.0/selenium.webdriver.4.44.0.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1900",
+      "level": "Warning",
+      "message": "Error occurred while getting package vulnerability data: Unable to load the service index for source https://api.nuget.org/v3/index.json.",
+      "projectPath": "/home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/test/selenium/web_tests/web_tests.csproj",
+      "warningLevel": 1,
+      "filePath": "/home/ykucher/java_prak/SalaryStatement_JAVA_WEB/salary-statement/src/test/selenium/web_tests/web_tests.csproj",
+      "targetGraphs": []
+    }
+  ]
+}

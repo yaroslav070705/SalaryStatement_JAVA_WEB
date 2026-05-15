@@ -68,7 +68,9 @@ public class ProjectSetupDAO implements ProjectSetupInterfaceDAO {
         Root<ProjectSetup> root = query.from(ProjectSetup.class);
         Join<ProjectSetup, Employee> e = root.join("employee_id");
 
-        query.select(e).distinct(true);
+        query.select(e)
+                .where(cb.equal(root.get("project_id").get("project_id"), project_id))
+                .distinct(true);
 
         return entityManager.createQuery(query).getResultList();
     }
@@ -99,6 +101,15 @@ public class ProjectSetupDAO implements ProjectSetupInterfaceDAO {
         project_setup.setRoleId(role_id);
 
         return project_setup;
+    }
+
+    @Transactional
+    @Override
+    public void delete(ProjectSetupRequest req) {
+        ProjectSetupPK pk = new ProjectSetupPK(req.getEmployeeId(), req.getProjectId());
+        ProjectSetup projectSetup = findById(pk);
+
+        entityManager.remove(projectSetup);
     }
 
 }

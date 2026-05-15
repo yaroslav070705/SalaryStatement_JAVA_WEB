@@ -80,4 +80,25 @@ public class RolePayoutValueDAOTest extends DaoTestSupport {
 
         assert !role_payout_value_dao.findAll().isEmpty();
     }
+
+    @Test
+    public void findByParamsRolePayoutValueDAOTest() {
+        ProjectRequest project_req = new ProjectRequest();
+        project_req.setProjectName("RolePayoutValueDAO findByParams project");
+        project_req.setStartDate(LocalDate.now());
+        project_req.setEndDate(null);
+        UUID project_id = project_dao.insert(project_req);
+
+        RoleRequest role_req = new RoleRequest();
+        role_req.setRoleName("RolePayoutValueDAO findByParams role");
+        UUID role_id = role_dao.insert(role_req);
+
+        RolePayoutValueRequest req = new RolePayoutValueRequest();
+        req.setProjectId(project_id);
+        req.setRoleId(role_id);
+        req.setValue(23000.0);
+        role_payout_value_dao.insert(req);
+
+        assert !role_payout_value_dao.findByParams(req).isEmpty();
+    }
 }

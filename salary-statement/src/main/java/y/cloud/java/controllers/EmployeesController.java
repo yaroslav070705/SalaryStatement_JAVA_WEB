@@ -2,6 +2,7 @@ package y.cloud.java.controllers;
 
 import net.bytebuddy.implementation.bytecode.constant.DefaultValue;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,10 +39,8 @@ public class EmployeesController {
     public List<EmployeeResponse> getAllEmployees(@RequestParam(required = false) String name,
                                                   @RequestParam(required = false) String surname,
                                                   @RequestParam(required = false) String middle_name,
-                                                  @RequestParam(required = false) LocalDate birth_date,
+                                                  @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate birth_date,
                                                   @RequestParam(required = false) UUID post_id,
-                                                  @RequestParam(required = false) UUID project_id,
-                                                  @RequestParam(required = false) UUID role_id,
                                                   @RequestParam(required = false) boolean is_bonused) {
         EmployeeRequest req = new EmployeeRequest();
         req.setName(name);
@@ -49,8 +48,9 @@ public class EmployeesController {
         req.setMiddleName(middle_name);
         req.setBirthDate(birth_date);
         req.setPostId(post_id);
+        req.setWorkExperience(-1);
 
-        List<Employee> emp_list = emp_dao.findAll();
+        List<Employee> emp_list = emp_dao.findByParams(req);
         List<EmployeeResponse> resp_list = new ArrayList<>();
 
         for(Employee emp : emp_list) {
@@ -106,10 +106,15 @@ public class EmployeesController {
         emp_dao.insert(req);
     }
 
+    @PostMapping("/{id}/fire")
+    public void fireEmployee(@PathVariable("id") UUID id) {
+        emp_dao.fire(id);
+    }
+
     @PutMapping("/{id}")
     public void updateEmployee(@PathVariable("id") UUID id, @RequestBody EmployeeRequest req) {
         req.setEmployeeId(id);
-        if(req.getName().isEmpty() || req.getSurname().isEmpty()) {
+        if(req.getName() == null || req.getSurname() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid request");
         }
 

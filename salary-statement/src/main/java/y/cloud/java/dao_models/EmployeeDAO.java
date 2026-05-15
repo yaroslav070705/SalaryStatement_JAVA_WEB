@@ -47,22 +47,22 @@ public class EmployeeDAO implements EmployeeInterfaceDAO{
         Root<Employee> root = query.from(Employee.class);
         List<Predicate> predicates = new ArrayList<>();
 
-        if(!req.getName().isEmpty()) {
+        if((req.getName() != null) && !req.getName().isEmpty()) {
             predicates.add(cb.equal(root.get("name"), req.getName()));
         }
-        if(!req.getSurname().isEmpty()) {
+        if((req.getSurname() != null) && !req.getSurname().isEmpty()) {
             predicates.add(cb.equal(root.get("surname"), req.getSurname()));
         }
-        if(!req.getMiddleName().isEmpty()) {
+        if((req.getMiddleName() != null) && !req.getMiddleName().isEmpty()) {
             predicates.add(cb.equal(root.get("middle_name"), req.getMiddleName()));
         }
-        if(!req.getBirthDate().equals(NotStated.REL.value())) {
+        if(req.getBirthDate() != null) {
             predicates.add(cb.equal(root.get("birth_date"), req.getBirthDate()));
         }
         if(req.getWorkExperience() != (int)NotStated.PRIMITIVE.value()) {
             predicates.add(cb.equal(root.get("work_experience"), req.getWorkExperience()));
         }
-        if(!req.getPostId().equals((UUID)NotStated.ID.value())) {
+        if((req.getPostId() != null) && !req.getPostId().equals((UUID)NotStated.ID.value())) {
             predicates.add(cb.equal(root.get("post_id").get("post_id"), req.getPostId()));
         }
 

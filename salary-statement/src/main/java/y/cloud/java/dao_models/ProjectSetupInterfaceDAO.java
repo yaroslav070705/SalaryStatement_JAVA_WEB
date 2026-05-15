@@ -11,4 +11,5 @@ import java.util.UUID;
 interface ProjectSetupInterfaceDAO extends BaseInterfaceDAO<ProjectSetup, ProjectSetupRequest, ProjectSetupPK> {
     List<ProjectSetup> findByParams(ProjectSetupRequest req);
     List<Employee> getProjectEmployees(UUID project_id);
+    public void delete(ProjectSetupRequest req);
 }

@@ -519,6 +519,7 @@
         const menuPoliciesBtn = document.getElementById("menuPoliciesBtn");
         const deletePanel = document.getElementById("deletePanel");
         const deleteEmployeeBtn = document.getElementById("deleteEmployeeBtn");
+        const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
         const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
         const profileCard = document.querySelector(".profile-card");
         const editEmployeeBtn = document.getElementById("editEmployeeBtn");
@@ -545,6 +546,31 @@
         if (cancelDeleteBtn && deletePanel) {
             cancelDeleteBtn.addEventListener("click", function () {
                 deletePanel.classList.remove("active");
+            });
+        }
+
+        if (confirmDeleteBtn) {
+            confirmDeleteBtn.addEventListener("click", async function () {
+                if (!employeeId) {
+                    return;
+                }
+
+                confirmDeleteBtn.disabled = true;
+                try {
+                    const response = await fetch(contextPath + "/employees/" + encodeURIComponent(employeeId) + "/fire", {
+                        method: "POST",
+                        headers: { "Accept": "application/json" }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error("Ошибка HTTP (fire employee): " + response.status);
+                    }
+
+                    window.location.href = contextPath + "/index.jsp";
+                } catch (error) {
+                    console.error("Ошибка удаления работника:", error);
+                    confirmDeleteBtn.disabled = false;
+                }
             });
         }
 
@@ -923,7 +949,7 @@
             const requests = [
                 (async () => {
                     try {
-                        renderProjects(await fetchJson(contextPath + "/projects/" + encodeURIComponent(employeeId), "projects"));
+                        renderProjects(await fetchJson(contextPath + "/projects/employee/" + encodeURIComponent(employeeId), "projects"));
                     } catch (e) {
                         console.error(e);
                     }
